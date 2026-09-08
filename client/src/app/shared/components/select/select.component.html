@@ -1,0 +1,12 @@
+<div class="select-wrapper" [class.ng-invalid]="invalid()">
+	<p-dropdown [options]="items()" [(ngModel)]="selectedItem" (onChange)="onChange($event)" [optionLabel]="descriptionField()" [filter]="true" [filterBy]="descriptionField()" [showClear]="true" [placeholder]="placeholder()" [style]="{'width': '100%'}" appendTo="body">
+		<ng-template pTemplate="selectedItem">
+			@if (selectedItem) {
+			<div>{{selectedItem[descriptionField()]}}</div>
+			}
+		</ng-template>
+		<ng-template let-item pTemplate="item">
+			<div>{{ item[descriptionField()] }}</div>
+		</ng-template>
+	</p-dropdown>
+</div>

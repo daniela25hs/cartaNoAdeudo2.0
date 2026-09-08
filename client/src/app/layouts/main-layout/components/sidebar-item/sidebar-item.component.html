@@ -1,0 +1,21 @@
+@let item = sidebarItem();
+<div class="menu-item pointer" [class.has-sub]="!!item.items" (click)="!item.items && click.emit(item)" [appPermissionControl]="item.permissions || []" [routerLinkActive]="!item.items ? 'active' : ''">
+	<a href="#" class="menu-link" [routerLink]="item.route">
+		@if (!!item.icon) {
+		<span class="menu-icon">
+			<i [ngClass]="item.icon"></i>
+		</span>
+		}
+		<span class="menu-text">{{item.text}}</span>
+		@if (!!item.items) {
+		<span class="menu-caret"><b class="caret"></b></span>
+		}
+	</a>
+	@if (!!item.items) {
+	<div class="menu-submenu">
+		@for (i of item.items; track i) {
+		<app-sidebar-item [sidebarItem]="i" appRemoveHost (click)="click.emit(i)"></app-sidebar-item>
+		}
+	</div>
+	}
+</div>

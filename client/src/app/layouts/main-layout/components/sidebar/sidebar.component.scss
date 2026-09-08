@@ -1,0 +1,33 @@
+.menu-header:not(:has(+ .menu-item)) {
+	display: none;
+}
+
+.brand-logo {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.brand-info {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.3;
+}
+
+.brand-title {
+	font-size: 0.9rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.brand-area {
+	font-size: 0.65rem;
+	font-weight: 400;
+	opacity: 0.85;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	white-space: normal; /* permite que salte de línea */
+	word-break: break-word;
+	line-height: 1.2;
+}

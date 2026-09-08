@@ -1,0 +1,43 @@
+<app-page-content pageTitle="">
+	@let nombreCompleto = $user.nombre();
+	@let email = $user.email();
+	<div class="row justify-content-center">
+		<div class="col-12 col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<div class="row g-3 mb-3">
+						<div class="col-sm-2">
+							<div
+								_ngcontent-ng-cli-universal-c223=""
+								class="menu-img"
+								style="font-size: 58px; line-height: 1"
+							>
+								<i
+									_ngcontent-ng-cli-universal-c223=""
+									class="mdi mdi-account-circle-outline"
+								></i>
+							</div>
+						</div>
+						<div
+							class="col-sm-10 d-flex flex-column justify-content-center"
+						>
+							<h5 class="mb-1">Mi Perfil</h5>
+							<p>{{ nombreCompleto }}</p>
+						</div>
+					</div>
+					<div>
+						<app-input label="Correo electr&oacute;nico">
+							<div class="form-control">{{ email }}</div>
+						</app-input>
+						<!-- <app-input label="CURP">
+							<div class="form-control">{{ user.curp }}</div>
+						</app-input>
+						<app-input label="Numero de empleado">
+							<div class="form-control">{{ user.employeeNumber }}</div>
+						</app-input> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</app-page-content>

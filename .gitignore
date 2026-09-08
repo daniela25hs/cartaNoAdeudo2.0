@@ -1,0 +1,19 @@
+# Docs de referencia (se mantienen en el repo principal, no se versionan aquí)
+docs/
+
+# Empaquetado
+*.zip
+
+# Artefactos de build (por si el .gitignore de cada subproyecto no aplica)
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/.angular/
+**/logs/
+
+#Docker
+docker-compose.yml
+docker-compose.*.yml
+**/Dockerfile
+**/Dockerfile.*

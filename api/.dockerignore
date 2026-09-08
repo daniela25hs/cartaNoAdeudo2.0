@@ -1,0 +1,20 @@
+# Build outputs del host (Windows) - no deben entrar al contenedor.
+# Si se copian, pisan el resultado de "dotnet restore" hecho dentro de la imagen.
+**/bin/
+**/obj/
+
+# IDE / editores
+**/.vs/
+**/.idea/
+**/.vscode/
+
+# Otros
+**/*.user
+**/logs/
+**/appsettings.*.local.json
+
+# No hace falta copiarlos al contexto de build
+Dockerfile
+.dockerignore
+.git
+.gitignore

@@ -1,0 +1,17 @@
+<section class="py-3">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+
+			@for (item of listRoutes; track item; let l = $last) {
+			<li class="breadcrumb-item" [class.active]="l">
+				@if (item.route && !l) {
+				<a [routerLink]="item.route">{{item.text}}</a>
+				}
+				@if (!item.route || l) {
+				{{item.text}}
+				}
+			</li>
+			}
+		</ol>
+	</nav>
+</section>

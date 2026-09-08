@@ -1,0 +1,11 @@
+.form-outline .form-control:focus{
+	box-shadow: none;
+}
+
+input.ng-invalid, input.ng-invalid .picker{
+	border: 1px solid #cccccc !important;
+}
+
+.auth .auth-wrapp .auth-content .auth-form .form-floating.outline .form-control:invalid, .auth .auth-wrapp .auth-content .auth-form .form-floating.outline .form-control.is-invalid{
+	border-bottom-color: #fff !important;
+}

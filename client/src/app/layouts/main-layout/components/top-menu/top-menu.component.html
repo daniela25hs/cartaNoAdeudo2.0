@@ -1,0 +1,37 @@
+@let nombreCompleto = $user.nombre();
+@let email = $user.email();
+<div class="menu">
+	<h3 class="page-header">{{ $app.pageTitle() }}</h3>
+
+	<div class="menu-item dropdown">
+		<a
+			href="#"
+			data-bs-toggle="dropdown"
+			data-bs-display="static"
+			class="menu-link"
+		>
+			<div class="menu-img">
+				<i class="mdi mdi-account-circle-outline"></i>
+			</div>
+			<div class="menu-text lh-1">
+				{{ nombreCompleto | titlecase }}
+				<span class="mdi mdi-chevron-down"></span>
+				<small class="d-block fw-normal">{{ email }}</small>
+			</div>
+		</a>
+
+		<div class="dropdown-menu dropdown-menu-end me-lg-3 py-0 border">
+			<a
+				class="dropdown-item d-flex align-items-center"
+				routerLink="./perfil"
+			>
+				<span class="mdi mdi-account-circle fs-4 me-2 text-pink"></span> Mi
+				perfil
+			</a>
+			<div class="dropdown-divider my-0"></div>
+			<a class="dropdown-item d-flex align-items-center" (click)="logout()">
+				<span class="mdi mdi-exit-to-app fs-4 me-2 text-pink"></span> Salir
+			</a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,62 @@
+<div id="sidebar" class="app-sidebar">
+	<div
+		class="auth-bg auth-bg-scroll"
+		style="background-image: url(assets/images/login-bg.jpg)"
+	>
+		<div class="auth-mask"></div>
+	</div>
+
+	<div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+		<div class="mobile-toggler">
+			<button
+				type="button"
+				class="menu-toggler"
+				data-dismiss="sidebar-mobile"
+			>
+				<span class="mdi mdi-arrow-left"> </span>
+			</button>
+		</div>
+
+		<div class="desktop-toggler">
+			<button
+				type="button"
+				class="menu-toggler"
+				data-toggle="sidebar-minify"
+			>
+				<span class="mdi mdi-arrow-left"> </span>
+			</button>
+		</div>
+
+		<div class="brand">
+			<a class="brand-logo" [title]="'title' | pageTexts">
+				<img
+					src="assets/images/escudo-sonora-blanco.svg"
+					class="logo"
+					[alt]="'title' | pageTexts"
+				/>
+				<div class="brand-info">
+					<span class="brand-title">{{ 'title' | pageTexts }}</span>
+				</div>
+			</a>
+		</div>
+
+		<div class="menu">
+			@for (g of items.groups; track g) {
+				<div class="menu-header">{{ g.text }}</div>
+				@for (i of g.items; track i) {
+					<app-sidebar-item
+						[sidebarItem]="i"
+						appRemoveHost
+						(click)="onClickItem($event)"
+					></app-sidebar-item>
+				}
+				<div class="menu-divider"></div>
+			}
+		</div>
+	</div>
+
+	<button
+		class="app-sidebar-mobile-backdrop"
+		data-dismiss="sidebar-mobile"
+	></button>
+</div>

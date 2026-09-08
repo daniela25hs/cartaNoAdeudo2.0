@@ -1,0 +1,9 @@
+<div class="col-sm-12">
+	<div class="g-1 g-sm-4 justify-content-center my-3 row">
+		@for (item of [].constructor(6); track item; let ix = $index) {
+		<div class="col">
+			<app-input-code-item (onKeyDown)="inputKeyDown($event, ix)" (onKeyUp)="inputKeyUp()"></app-input-code-item>
+		</div>
+		}
+	</div>
+</div>

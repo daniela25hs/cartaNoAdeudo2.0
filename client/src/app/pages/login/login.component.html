@@ -1,0 +1,196 @@
+<div class="auth">
+	<div id="app" class="app auth-wrapp">
+		<div class="auth-pattern"></div>
+		<div
+			class="auth-bg auth-bg-scroll"
+			style="background-image: url(assets/images/login-bg.jpg)"
+		>
+			<div class="auth-mask"></div>
+		</div>
+
+		<div class="auth-content">
+			<div class="container-fluid">
+				<div class="row g-0">
+					<div class="col-sm-7 auth-border">
+						<div class="auth-info">
+							<header class="mb-5">
+								<div
+									class="row justify-content-center align-items-center m-0 mb-sm-5"
+								>
+									<div class="col-sm-3 d-none d-sm-inline-block">
+										<a
+											class="auth-logo logo-1"
+											[href]="'logoLeft.url' | pageTexts"
+											[title]="'logoLeft.title' | pageTexts"
+											target="_blank"
+										>
+											<img
+												[src]="'logoLeft.image' | pageTexts"
+												class=""
+												[alt]="'logoLeft.title' | pageTexts"
+											/>
+										</a>
+									</div>
+									<!-- <div class="col-6 col-sm-3 offset-0 offset-sm-1 ">
+										<a class="auth-logo logo-2" [href]="'logoCenter.url' | pageTexts" [title]="'logoCenter.title' | pageTexts" target="_blank">
+											<img [src]="'logoCenter.image' | pageTexts" class="" [alt]="'logoCenter.title' | pageTexts">
+										</a>
+									</div> -->
+									<div class="col-6 col-sm-3 offset-0 offset-sm-1">
+										<a
+											class="auth-logo logo-3"
+											[href]="'logoRight.url' | pageTexts"
+											[title]="'logoRight.title' | pageTexts"
+											target="_blank"
+										>
+											<img
+												[src]="'logoRight.image' | pageTexts"
+												class=""
+												[alt]="'logoRight.title' | pageTexts"
+											/>
+										</a>
+									</div>
+								</div>
+							</header>
+
+							<div
+								class="row my-auto justify-content-center mb-0 mb-sm-5"
+							>
+								<div class="col-12 col-sm-8 text-center">
+									<h1 class="text-uppercase">
+										{{ "title" | pageTexts }}
+									</h1>
+									<h2 class="mb-3">{{ "subtitle" | pageTexts }}</h2>
+									<p>
+										{{ "description" | pageTexts }}
+									</p>
+								</div>
+							</div>
+
+							<footer>
+								<div class="auth-footer d-none d-sm-block">
+									<div class="row justify-content-center">
+										<div
+											class="col-sm-8 border-start border-light ps-3"
+										>
+											<p class="text-light-400 mb-0">
+												{{ "footerAddress" | pageTexts }}
+											</p>
+										</div>
+
+										<div class="col-sm-12">
+											<p class="text-center mt-3">
+												<a
+													href="https://www.sonora.gob.mx/gobierno/politicas-de-uso-y-privacidad"
+													class="btn btn btn-link py-0 px-0 link-white"
+													title="Aviso de Privacidad"
+													target="_blank"
+												>
+													<span class="text">
+														Aviso de Privacidad</span
+													>
+												</a>
+											</p>
+										</div>
+									</div>
+								</div>
+							</footer>
+						</div>
+					</div>
+
+					<div class="col-md-5">
+						<div class="auth-form">
+							<section class="system-messages">
+								<div class="container-fluid">
+									<div></div>
+								</div>
+							</section>
+
+							<section class="system-error-messages"></section>
+
+							<h3 class="text-uppercase text-white">
+								<span class="mdi mdi-account-circle-outline"></span>
+								Inicio de Sesión
+							</h3>
+							<div class="my-3">
+								<div class="form-floating outline outline-white">
+									<input
+										type="email"
+										class="form-control form-control-lg text-white"
+										id="email"
+										name="email"
+										value=""
+										required
+										placeholder="Ingresa con tu correo electrónico"
+										[(ngModel)]="email"
+									/>
+									<label for="email">Correo Electrónico</label>
+								</div>
+							</div>
+							<div class="mb-3">
+								<div class="form-floating outline outline-white">
+									<input
+										type="password"
+										class="form-control form-control-lg text-white"
+										id="password"
+										name="password"
+										value=""
+										required=""
+										placeholder="Ingresa tu contraseña"
+										[(ngModel)]="password"
+									/>
+									<label for="password">Contraseña</label>
+								</div>
+							</div>
+							<div
+								class="text-center mt-3 mb-3 d-flex justify-content-center align-items-center h-200px"
+							>
+								<button
+									class="btn btn-warning btn-lg"
+									(click)="login()"
+								>
+									<span class="mdi mdi-login-variant"></span> Iniciar
+									sesión
+								</button>
+							</div>
+
+							<div class="d-sm-none w-50 m-auto d-block text-center">
+								<a
+									class=""
+									href="https://www.sonora.gob.mx"
+									title=""
+									target="_blank"
+								>
+									<img
+										src="assets/images/logo-sonora-white.svg"
+										class=""
+										alt="Gobierno del Estado de Sonora"
+									/>
+								</a>
+
+								<p class="text-center mt-3">
+									<a
+										href="https://www.sonora.gob.mx/gobierno/politicas-de-uso-y-privacidad"
+										class="btn btn btn-link py-0 px-0 link-white"
+										title="Aviso de Privacidad"
+									>
+										<span class="text"> Aviso de Privacidad</span>
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<a
+						href="javascript:void(0);"
+						class="btn btn-circle btn-warning btn-phone"
+						title="Información de contacto"
+						(click)="openContactInfo()"
+					>
+						<span class="mdi mdi-chat-processing-outline"></span>
+						<span class="text"> Información de contacto</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

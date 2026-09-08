@@ -1,0 +1,26 @@
+<div class="stepper">
+	@for (step of steps(); track step.id; let i = $index) {
+		<div class="step-container">
+			<div
+				class="step-indicator"
+				[class.active]="i === currentStep()"
+				[class.completed]="i < currentStep()"
+			>
+				@if (i < currentStep()) {
+					<span class="step-checkmark">
+						<span class="mdi mdi-check-circle"></span>
+					</span>
+				} @else {
+					<span class="step-number">{{ i + 1 }}</span>
+				}
+			</div>
+			<div
+				class="step-label"
+				[class.active]="i === currentStep()"
+				[class.completed]="i < currentStep()"
+			>
+				{{ step.title }}
+			</div>
+		</div>
+	}
+</div>

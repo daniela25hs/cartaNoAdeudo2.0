@@ -1,0 +1,17 @@
+<div class="form-group">
+	@if (label()) {
+	<label for="txtName" class="form-label">{{label()}}
+		@if (required) {
+		(<span class="text-danger">*</span>)
+		}:
+	</label>
+	}
+	<div #contentWrap>
+		<ng-content></ng-content>
+	</div>
+	@if (!valid() && error()) {
+	<span class="form-text text-danger">
+		{{error()}}
+	</span>
+	}
+</div>

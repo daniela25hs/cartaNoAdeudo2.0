@@ -1,0 +1,27 @@
+<div id="app" class="app app-content-full-height app-footer-fixed ">
+
+	<app-sidebar></app-sidebar>
+
+	<div id="content" class="app-content">
+
+		<div class="container-fluid ">
+
+			<div id="header" class="app-header">
+
+				<div class="mobile-toggler">
+					<button type="button" class="menu-toggler" data-toggle="sidebar-mobile">
+						<span class="mdi mdi-menu"></span>
+					</button>
+				</div>
+
+				<app-top-menu></app-top-menu>
+			</div>
+			@if (is_loaded) {
+			<router-outlet></router-outlet>
+			}
+
+		</div>
+	</div>
+
+</div>
+<a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
