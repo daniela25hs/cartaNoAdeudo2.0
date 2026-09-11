@@ -3,12 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace CartaNoAdeudoApi.Core.DTOs.Requests.Cartas
 {
-    /// <summary>
-    /// Payload que envía SAP al endpoint de generación (RF-003). Reemplaza a
-    /// <c>RequestFirmaCarta</c> del proyecto legado; se conservan las mismas
-    /// validaciones de formato (RFC, tipo de carta, correo).
-    /// Los nombres de propiedad JSON respetan el contrato ya definido con SAP.
-    /// </summary>
     public record GenerarCartaRequest(
         [property: JsonPropertyName("RFC")]
         [property: Required(ErrorMessage = "El valor RFC es obligatorio")]

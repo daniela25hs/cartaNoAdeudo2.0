@@ -29,4 +29,10 @@ namespace CartaNoAdeudoApi.Core.Exceptions
     {
         public DependencyException(string message) : base(message) { }
     }
+
+    /// <summary>503 — un servicio externo del que dependemos no está disponible (SIGA, firmaContraloría, SAP...).</summary>
+    public class ServiceUnavailableException : BusinessException
+    {
+        public ServiceUnavailableException(string message) : base(message) { }
+    }
 }

@@ -32,22 +32,19 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Interceptors
 
             var ahora = DateTimeOffset.UtcNow;
             var usuarioId = currentUser.UserId;
-            var usuarioEmail = currentUser.Email;
 
             foreach (var entry in context.ChangeTracker.Entries<AuditableEntity>())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.FechaCreacion = ahora;
-                        entry.Entity.CreadoPor ??= usuarioId;
-                        entry.Entity.CreadoPorEmail ??= usuarioEmail;
+                        entry.Entity.FechaCreo = ahora;
+                        entry.Entity.IdCreo ??= usuarioId;
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.FechaEdicion = ahora;
-                        entry.Entity.EditadoPor = usuarioId;
-                        entry.Entity.EditadoPorEmail = usuarioEmail;
+                        entry.Entity.FechaEdito = ahora;
+                        entry.Entity.IdEdito = usuarioId;
                         break;
                 }
             }

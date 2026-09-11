@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -7,13 +8,10 @@ using Microsoft.IdentityModel.Tokens;
 using CartaNoAdeudoApi.Core.Interfaces;
 using CartaNoAdeudoApi.Core.Interfaces.Repositories;
 using CartaNoAdeudoApi.Core.Options;
-using CartaNoAdeudoApi.Core.Interfaces.Firma;
-using CartaNoAdeudoApi.Core.Interfaces.Pdf;
+using CartaNoAdeudoApi.Core.Utils.Validaciones.Carta;
 using CartaNoAdeudoApi.Infrastructure.Auth;
 using CartaNoAdeudoApi.Infrastructure.Data;
 using CartaNoAdeudoApi.Infrastructure.Data.Interceptors;
-using CartaNoAdeudoApi.Infrastructure.Firma;
-using CartaNoAdeudoApi.Infrastructure.Pdf;
 using CartaNoAdeudoApi.Infrastructure.Repositories;
 
 namespace CartaNoAdeudoApi.API.Extensions
@@ -52,46 +50,51 @@ namespace CartaNoAdeudoApi.API.Extensions
             return services;
         }
 
-        /// <summary>Generación del PDF de la carta (RF-002/RF-003). Ver Core.Options.PdfOptions
-        /// para las rutas de assets/fuentes que hay que copiar al publish/Dockerfile.</summary>
-        public static IServiceCollection AddPdfGeneration(this IServiceCollection services, IConfiguration config)
-        {
-            services.Configure<PdfOptions>(config.GetSection("Pdf"));
-
-            // Resuelve AssetsPath contra el directorio del binario si viene
-            // relativo (ej. "Assets/Pdf"), en vez de depender del directorio
-            // de trabajo del proceso — que era la causa de que las rutas
-            // "./assets/..." del proyecto legado se rompieran según desde
-            // dónde se lanzara el proceso (IIS, systemd, contenedor, etc.).
-            services.PostConfigure<PdfOptions>(opt =>
-            {
-                if (!Path.IsPathRooted(opt.AssetsPath))
-                    opt.AssetsPath = Path.Combine(AppContext.BaseDirectory, opt.AssetsPath);
-            });
-
-            services.AddScoped<IPdfGeneratorService, CartaPdfGenerator>();
-            return services;
-        }
-
         /// <summary>
-        /// Cliente del servicio "firmaContraloria" (wsLicAlcoholes) que asigna
-        /// el folio de la carta (RF-003). El timeout es por-intento; los
-        /// reintentos (RN-006/007) los maneja el servicio de aplicación que
-        /// llama a <see cref="IFirmaContraloriaService"/>, no este cliente HTTP.
+        /// Registra los IValidator&lt;T&gt; de FluentValidation (Core/Utils/Validaciones) para
+        /// poder inyectarlos donde se necesiten. No valida automáticamente los
+        /// requests entrantes: hay que llamar validator.ValidateAsync(...) donde
+        /// corresponda (controller o service).
         /// </summary>
-        public static IServiceCollection AddFirmaContraloria(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddValidators(this IServiceCollection services)
         {
-            services.Configure<FirmaContraloriaOptions>(config.GetSection("FirmaContraloria"));
-
-            services.AddHttpClient<IFirmaContraloriaService, FirmaContraloriaClient>((sp, client) =>
-            {
-                var options = sp.GetRequiredService<IOptions<FirmaContraloriaOptions>>().Value;
-                client.BaseAddress = new Uri(options.BaseUrl);
-                client.Timeout = TimeSpan.FromSeconds(options.TimeoutSegundos);
-            });
-
+            services.AddValidatorsFromAssemblyContaining<CartaValidator>();
             return services;
         }
+
+        // ─────────────────────────────────────────────────────────────────────
+        //  PDF de la carta (RF-002/RF-003) y cliente "firmaContraloria" (RF-003)
+        //
+        //  TODO: reimplementar tras la reescritura de entidades. Los tipos que
+        //  registraban estos métodos (PdfOptions / IPdfGeneratorService /
+        //  CartaPdfGenerator y FirmaContraloriaOptions / IFirmaContraloriaService
+        //  / FirmaContraloriaClient) ya no existen en la solución. Al volver a
+        //  crearlos, restaurar estos métodos y sus llamadas en Program.cs.
+        //
+        //  public static IServiceCollection AddPdfGeneration(this IServiceCollection services, IConfiguration config)
+        //  {
+        //      services.Configure<PdfOptions>(config.GetSection("Pdf"));
+        //      services.PostConfigure<PdfOptions>(opt =>
+        //      {
+        //          if (!Path.IsPathRooted(opt.AssetsPath))
+        //              opt.AssetsPath = Path.Combine(AppContext.BaseDirectory, opt.AssetsPath);
+        //      });
+        //      services.AddScoped<IPdfGeneratorService, CartaPdfGenerator>();
+        //      return services;
+        //  }
+        //
+        //  public static IServiceCollection AddFirmaContraloria(this IServiceCollection services, IConfiguration config)
+        //  {
+        //      services.Configure<FirmaContraloriaOptions>(config.GetSection("FirmaContraloria"));
+        //      services.AddHttpClient<IFirmaContraloriaService, FirmaContraloriaClient>((sp, client) =>
+        //      {
+        //          var options = sp.GetRequiredService<IOptions<FirmaContraloriaOptions>>().Value;
+        //          client.BaseAddress = new Uri(options.BaseUrl);
+        //          client.Timeout = TimeSpan.FromSeconds(options.TimeoutSegundos);
+        //      });
+        //      return services;
+        //  }
+        // ─────────────────────────────────────────────────────────────────────
 
         public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration config)
         {

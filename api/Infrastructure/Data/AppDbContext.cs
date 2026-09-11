@@ -1,8 +1,9 @@
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using CartaNoAdeudoApi.Core.Entities.Cartas;
-using CartaNoAdeudoApi.Core.Entities.Certificados;
-using CartaNoAdeudoApi.Core.Entities.Layouts;
+using CartaNoAdeudoApi.Core.Entities.Catalogos;
+using CartaNoAdeudoApi.Core.Entities.Sistema;
+using Bit = CartaNoAdeudoApi.Core.Entities.Bitacora;
 
 namespace CartaNoAdeudoApi.Infrastructure.Data
 {
@@ -10,20 +11,33 @@ namespace CartaNoAdeudoApi.Infrastructure.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<SolicitudCarta> SolicitudesCarta { get; set; }
-        public DbSet<IntentoFirma> IntentosFirma { get; set; }
-        public DbSet<CertificadoDigital> CertificadosDigitales { get; set; }
-        public DbSet<LayoutDocumento> LayoutsDocumento { get; set; }
+        // --- Esquema carta ---
+        public DbSet<Datos> Datos { get; set; }
+        public DbSet<Archivos> Archivos { get; set; }
+        public DbSet<Tareas> Tareas { get; set; }
+        public DbSet<Firmas> Firmas { get; set; }
+        public DbSet<TiposCartas> TiposCartas { get; set; }
+        public DbSet<FolioConsecutivo> FoliosConsecutivos { get; set; }
+
+        // --- Esquema cat ---
+        public DbSet<Estado> Estados { get; set; }
+        public DbSet<EstadoTarea> EstadosTarea { get; set; }
+        public DbSet<Layout> Layouts { get; set; }
+        public DbSet<Firmante> Firmantes { get; set; }
+
+        // --- Esquema bit ---
+        public DbSet<Bit.Carta> BitacoraCartas { get; set; }
+        public DbSet<Bit.Config> BitacoraConfigs { get; set; }
+
+        // --- Esquema sist ---
+        public DbSet<Configuracion> Configuraciones { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Toma todas las IEntityTypeConfiguration<T> de este ensamblado.
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            // Nombres en snake_case automáticos (tablas y columnas) salvo que
-            // una configuración los fije explícitamente.
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
                 var tableName = entity.GetTableName();
