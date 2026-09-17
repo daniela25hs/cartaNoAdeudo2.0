@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ContentChild, ElementRef, EventEmitter, input, Input, Output, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ContentChild, ElementRef, EventEmitter, input, Input, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 declare const $: any
 
@@ -6,6 +6,7 @@ declare const $: any
 	selector: 'app-input',
 	standalone: true,
 	templateUrl: './input.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements AfterViewInit {

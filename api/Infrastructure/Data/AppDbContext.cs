@@ -24,6 +24,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Data
         public DbSet<EstadoTarea> EstadosTarea { get; set; }
         public DbSet<Layout> Layouts { get; set; }
         public DbSet<Firmante> Firmantes { get; set; }
+        public DbSet<Frase> Frases { get; set; }
 
         // --- Esquema bit ---
         public DbSet<Bit.Carta> BitacoraCartas { get; set; }
@@ -31,6 +32,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Data
 
         // --- Esquema sist ---
         public DbSet<Configuracion> Configuraciones { get; set; }
+        public DbSet<ControlFolio> ControlFolios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

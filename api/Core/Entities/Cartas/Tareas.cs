@@ -5,7 +5,7 @@ namespace CartaNoAdeudoApi.Core.Entities.Cartas
     public class Tareas : BaseEntity
     {
         public Guid IdDato { get; set; }
-        public Guid IdEstado { get; set; }
+        public int IdEstado { get; set; }
         public DateTimeOffset FechaInicio { get; set; } = DateTimeOffset.UtcNow;
         public DateTimeOffset? FechaFin { get; set; }
         public string? Nota { get; set; }

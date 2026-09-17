@@ -25,9 +25,10 @@ try
     builder.Services.AddRepositories();
     builder.Services.AddAppServices();
     builder.Services.AddValidators();
-    // TODO: restaurar cuando existan los servicios PDF / FirmaContraloría (ver ServiceExtensions.cs).
+    builder.Services.AddFirmaContraloria(builder.Configuration);
+    builder.Services.AddLayoutStorage(builder.Configuration);
+    // TODO: restaurar cuando exista el servicio de PDF (ver ServiceExtensions.cs).
     // builder.Services.AddPdfGeneration(builder.Configuration);
-    // builder.Services.AddFirmaContraloria(builder.Configuration);
     builder.Services.AddCorsPolicy(builder.Configuration);
     builder.Services.AddAuthorization();
 

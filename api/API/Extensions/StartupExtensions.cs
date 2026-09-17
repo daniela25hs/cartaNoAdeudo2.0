@@ -25,6 +25,7 @@ namespace CartaNoAdeudoApi.API.Extensions
                 logger.LogInformation("Sembrando catálogos...");
                 await EstadoSeeder.SeedAsync(db, loggerFactory);
                 await TipoCartaSeeder.SeedAsync(db, loggerFactory);
+                await EstadoTareaSeeder.SeedAsync(db, loggerFactory);
             }
             catch (Exception ex)
             {

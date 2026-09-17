@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PageContentComponent } from '../../layouts/main-layout/components/page-content/page-content.component';
 import { InputComponent } from '../../shared/components';
@@ -8,6 +8,7 @@ import { UserState } from '../../shared/states/user.state';
     selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         PageContentComponent,
         FormsModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
 	ReactiveFormsModule,
 	FormGroup,
@@ -16,6 +16,7 @@ export type ActivacionMode = 'activar' | 'cambiar-password';
 	selector: 'app-activacion-usuario',
 	imports: [ReactiveFormsModule],
 	templateUrl: './activacion-usuario.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: ``,
 })
 export class ActivacionUsuarioComponent implements OnInit {

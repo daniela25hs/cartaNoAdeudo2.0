@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -14,6 +14,7 @@ import { UserState } from '../../shared/states/user.state';
 	imports: [FormsModule, PageTextsPipe],
 	providers: [DialogService],
 	templateUrl: './login.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {

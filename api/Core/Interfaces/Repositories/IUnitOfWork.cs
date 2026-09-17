@@ -11,6 +11,9 @@ namespace CartaNoAdeudoApi.Core.Interfaces.Repositories
     public interface IUnitOfWork : IDisposable
     {
         IGenericRepository<T> Repository<T>() where T : BaseEntity;
+        ITipoCartaRepository TiposCartas { get; }
+        ILayoutRepository Layouts { get; }
+        IEstadoTareaRepository EstadosTarea { get; }
         Task<int> SaveAsync(CancellationToken ct = default);
         Task<ITransaction> BeginTransactionAsync(CancellationToken ct = default);
     }

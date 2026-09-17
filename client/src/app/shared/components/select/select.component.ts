@@ -1,15 +1,16 @@
 import { JsonPipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, input, Input, model, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, input, Input, model, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 
 @Component({
     selector: 'app-select',
     imports: [
-        DropdownModule,
+        SelectModule,
         FormsModule,
     ],
     templateUrl: './select.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./select.component.scss']
 })
 export class SelectComponent implements OnInit, OnChanges {

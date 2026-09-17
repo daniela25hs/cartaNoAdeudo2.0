@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 declare const $: any;
@@ -6,6 +6,7 @@ declare const $: any;
 	selector: 'app-modal-content',
 	standalone: true,
 	templateUrl: './modal-content.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrls: ['./modal-content.component.scss'],
 })
 export class ModalContentComponent implements OnInit {

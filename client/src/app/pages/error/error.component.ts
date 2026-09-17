@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
     templateUrl: './error.component.html',
     styleUrls: ['./error.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class ErrorComponent implements OnInit {

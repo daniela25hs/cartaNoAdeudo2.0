@@ -312,8 +312,8 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id_dato");
 
-                    b.Property<Guid>("IdEstado")
-                        .HasColumnType("uuid")
+                    b.Property<int>("IdEstado")
+                        .HasColumnType("integer")
                         .HasColumnName("id_estado");
 
                     b.Property<string>("MensajeError")
@@ -390,10 +390,12 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Catalogos.EstadoTarea", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -496,6 +498,58 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     b.ToTable("firmante", "cat");
                 });
 
+            modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Catalogos.Frase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("activo");
+
+                    b.Property<int>("Anio")
+                        .HasColumnType("integer")
+                        .HasColumnName("anio");
+
+                    b.Property<DateTimeOffset>("FechaCreo")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creo");
+
+                    b.Property<DateTimeOffset?>("FechaEdito")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_edito");
+
+                    b.Property<DateOnly>("FechaFinAutorizada")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_fin_autorizada");
+
+                    b.Property<DateOnly>("FechaInicioAutorizada")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_inicio_autorizada");
+
+                    b.Property<Guid?>("IdCreo")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_creo");
+
+                    b.Property<Guid?>("IdEdito")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_edito");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("frase");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Anio");
+
+                    b.ToTable("frases", "cat");
+                });
+
             modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Catalogos.Layout", b =>
                 {
                     b.Property<Guid>("Id")
@@ -587,6 +641,35 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("configuracion", "sist");
+                });
+
+            modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Sistema.ControlFolio", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Anio")
+                        .HasColumnType("integer")
+                        .HasColumnName("anio");
+
+                    b.Property<int>("UltimoFolio")
+                        .HasColumnType("integer")
+                        .HasColumnName("ultimo_folio");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Anio")
+                        .IsUnique();
+
+                    b.ToTable("control_folios", "sist");
                 });
 
             modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Bitacora.Carta", b =>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoadingComponent } from './shared/components';
 
@@ -8,6 +8,7 @@ import { LoadingComponent } from './shared/components';
 		<app-loading [listener]="true"></app-loading>
 		<router-outlet></router-outlet>
 	`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [LoadingComponent, RouterOutlet]
 })
 export class AppComponent { }

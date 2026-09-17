@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, input } from '@angular/core';
+import { Component, Input, OnInit, input, ChangeDetectionStrategy } from '@angular/core';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { AppState } from '../../../../shared/states/app.state';
 
@@ -6,6 +6,7 @@ import { AppState } from '../../../../shared/states/app.state';
     selector: 'app-page-content',
     templateUrl: './page-content.component.html',
     styleUrls: ['./page-content.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [BreadcrumbComponent]
 })
 export class PageContentComponent implements OnInit {

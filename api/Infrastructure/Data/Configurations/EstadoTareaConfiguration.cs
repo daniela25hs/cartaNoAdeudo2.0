@@ -10,6 +10,8 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Configurations
         {
             builder.ToTable("estado_tarea", "cat");
 
+            builder.HasKey(e => e.Id);
+
             builder.Property(e => e.Descripcion).HasMaxLength(100).IsRequired();
             builder.HasIndex(e => e.Descripcion).IsUnique();
         }

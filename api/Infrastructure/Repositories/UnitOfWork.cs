@@ -9,6 +9,9 @@ namespace CartaNoAdeudoApi.Infrastructure.Repositories
     {
         private readonly AppDbContext _db = db;
         private readonly Dictionary<Type, object> _repos = [];
+        private ITipoCartaRepository? _tiposCartas;
+        private ILayoutRepository? _layouts;
+        private IEstadoTareaRepository? _estadosTarea;
 
         public IGenericRepository<T> Repository<T>() where T : BaseEntity
         {
@@ -19,6 +22,10 @@ namespace CartaNoAdeudoApi.Infrastructure.Repositories
             }
             return (IGenericRepository<T>)repo;
         }
+
+        public ITipoCartaRepository TiposCartas => _tiposCartas ??= new TipoCartaRepository(_db);
+        public ILayoutRepository Layouts => _layouts ??= new LayoutRepository(_db);
+        public IEstadoTareaRepository EstadosTarea => _estadosTarea ??= new EstadoTareaRepository(_db);
 
         public Task<int> SaveAsync(CancellationToken ct = default) =>
             _db.SaveChangesAsync(ct);

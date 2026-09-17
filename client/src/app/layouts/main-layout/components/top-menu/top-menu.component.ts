@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services';
@@ -10,6 +10,7 @@ import { UserState } from '../../../../shared/states/user.state';
     selector: 'app-top-menu',
     templateUrl: './top-menu.component.html',
     styleUrls: ['./top-menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         RouterLink,
         FormsModule,

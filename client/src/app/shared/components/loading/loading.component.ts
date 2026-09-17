@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit, computed, effect, input, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FadeInOut } from '../../functions';
@@ -8,7 +8,7 @@ import { AppState } from '../../states/app.state';
     selector: 'app-loading',
     templateUrl: './loading.component.html',
     styleUrls: ['./loading.component.scss'],
-    imports: [CommonModule],
+    imports: [],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [FadeInOut(100, 200)]
 })

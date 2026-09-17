@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { loadScripts } from '../../shared/functions';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent, TopMenuComponent } from './components';
@@ -14,6 +14,7 @@ import { SidebarComponent, TopMenuComponent } from './components';
 		padding: 3px !important;
 	}
 	`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         SidebarComponent,
         TopMenuComponent,

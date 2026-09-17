@@ -13,6 +13,7 @@ using CartaNoAdeudoApi.Infrastructure.Auth;
 using CartaNoAdeudoApi.Infrastructure.Data;
 using CartaNoAdeudoApi.Infrastructure.Data.Interceptors;
 using CartaNoAdeudoApi.Infrastructure.Repositories;
+using CartaNoAdeudoApi.Infrastructure.Services;
 
 namespace CartaNoAdeudoApi.API.Extensions
 {
@@ -47,6 +48,27 @@ namespace CartaNoAdeudoApi.API.Extensions
         /// </summary>
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
+            services.AddScoped<ICartaService, CartaService>();
+            services.AddScoped<ILayoutService, LayoutService>();
+            return services;
+        }
+
+        /// <summary>
+        /// Extracción de marcadores y guardado en disco de los .docx de <c>Layout</c>
+        /// (RF-002). Sección "LayoutStorage" de appsettings; ruta relativa se resuelve
+        /// contra <c>AppContext.BaseDirectory</c>, igual que el <c>Pdf:AssetsPath</c> legado.
+        /// </summary>
+        public static IServiceCollection AddLayoutStorage(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<LayoutStorageOptions>(config.GetSection("LayoutStorage"));
+            services.PostConfigure<LayoutStorageOptions>(opt =>
+            {
+                if (!Path.IsPathRooted(opt.BasePath))
+                    opt.BasePath = Path.Combine(AppContext.BaseDirectory, opt.BasePath);
+            });
+
+            services.AddScoped<IMarcadorExtractor, DocxMarcadorExtractor>();
+            services.AddScoped<IDocxLayoutStorage, DocxLayoutStorage>();
             return services;
         }
 
@@ -62,14 +84,26 @@ namespace CartaNoAdeudoApi.API.Extensions
             return services;
         }
 
+        /// <summary>Cliente HTTP hacia "wsLicAlcoholes" (firma FEA vía Contraloría). Ver <see cref="IFirmaContraloriaService"/>.</summary>
+        public static IServiceCollection AddFirmaContraloria(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<FirmaContraloriaOptions>(config.GetSection("FirmaContraloria"));
+            services.AddHttpClient<IFirmaContraloriaService, FirmaContraloriaClient>((sp, client) =>
+            {
+                var options = sp.GetRequiredService<IOptions<FirmaContraloriaOptions>>().Value;
+                client.BaseAddress = new Uri(options.BaseUrl);
+                client.Timeout = TimeSpan.FromSeconds(options.TimeoutSegundos);
+            });
+            return services;
+        }
+
         // ─────────────────────────────────────────────────────────────────────
-        //  PDF de la carta (RF-002/RF-003) y cliente "firmaContraloria" (RF-003)
+        //  PDF de la carta (RF-002/RF-003)
         //
         //  TODO: reimplementar tras la reescritura de entidades. Los tipos que
-        //  registraban estos métodos (PdfOptions / IPdfGeneratorService /
-        //  CartaPdfGenerator y FirmaContraloriaOptions / IFirmaContraloriaService
-        //  / FirmaContraloriaClient) ya no existen en la solución. Al volver a
-        //  crearlos, restaurar estos métodos y sus llamadas en Program.cs.
+        //  registraban este método (PdfOptions / IPdfGeneratorService /
+        //  CartaPdfGenerator) ya no existen en la solución. Al volver a crearlos,
+        //  restaurar este método y su llamada en Program.cs.
         //
         //  public static IServiceCollection AddPdfGeneration(this IServiceCollection services, IConfiguration config)
         //  {
@@ -80,18 +114,6 @@ namespace CartaNoAdeudoApi.API.Extensions
         //              opt.AssetsPath = Path.Combine(AppContext.BaseDirectory, opt.AssetsPath);
         //      });
         //      services.AddScoped<IPdfGeneratorService, CartaPdfGenerator>();
-        //      return services;
-        //  }
-        //
-        //  public static IServiceCollection AddFirmaContraloria(this IServiceCollection services, IConfiguration config)
-        //  {
-        //      services.Configure<FirmaContraloriaOptions>(config.GetSection("FirmaContraloria"));
-        //      services.AddHttpClient<IFirmaContraloriaService, FirmaContraloriaClient>((sp, client) =>
-        //      {
-        //          var options = sp.GetRequiredService<IOptions<FirmaContraloriaOptions>>().Value;
-        //          client.BaseAddress = new Uri(options.BaseUrl);
-        //          client.Timeout = TimeSpan.FromSeconds(options.TimeoutSegundos);
-        //      });
         //      return services;
         //  }
         // ─────────────────────────────────────────────────────────────────────

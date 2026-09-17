@@ -1,11 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, output, QueryList, ViewChildren } from '@angular/core';
+
+import { AfterViewInit, Component, output, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { InputCodeItemChange, InputCodeItemComponent } from './input-code-item/input-code-item.component';
 
 @Component({
     selector: 'app-input-code',
-    imports: [CommonModule, InputCodeItemComponent],
+    imports: [InputCodeItemComponent],
     templateUrl: './input-code.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./input-code.component.scss']
 })
 export class InputCodeComponent implements AfterViewInit {

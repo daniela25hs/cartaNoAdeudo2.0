@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import localeEsMx from '@angular/common/locales/es-MX';
 import {
 	ApplicationConfig,
@@ -14,7 +14,7 @@ import { AuthService } from './core/services';
 import { errorInterceptor, requestInterceptor } from './core/interceptors';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import Aura from '@primeng/themes/aura';
+import Aura from '@primeuix/themes/aura';
 
 registerLocaleData(localeEsMx, 'es-Mx');
 
@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
 		// }),
 		{ provide: LOCALE_ID, useValue: 'es-Mx' },
 		provideRouter(routes),
-		provideHttpClient(
+		provideHttpClient(withXhr(), 
 			withInterceptors([requestInterceptor, errorInterceptor]),
 		),
 		provideAnimationsAsync(),

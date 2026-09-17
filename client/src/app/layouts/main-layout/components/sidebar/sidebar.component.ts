@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { sideBarData } from '../../../../core/data';
 import { SideBarItem } from '../../../../core/models';
 import { AuthService } from '../../../../core/services';
@@ -11,6 +11,7 @@ declare const $: any;
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SidebarItemComponent, RemoveHostDirective, PageTextsPipe]
 })
 export class SidebarComponent implements OnInit, AfterViewInit {

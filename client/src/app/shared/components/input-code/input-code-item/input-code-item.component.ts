@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, output, ViewChild } from '@angular/core';
+
+import { Component, ElementRef, output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 export interface InputCodeItemChange {
 	// value: string,
 	next: boolean,
@@ -7,8 +7,9 @@ export interface InputCodeItemChange {
 }
 @Component({
     selector: 'app-input-code-item',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './input-code-item.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./input-code-item.component.scss']
 })
 export class InputCodeItemComponent {

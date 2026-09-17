@@ -28,7 +28,7 @@ namespace CartaNoAdeudoApi.API.Controllers
         private async Task<IActionResult> ForwardAsync(Func<Task<SigaProxyResult>> call, string operacion)
         {
             try
-            {
+            {  
                 var result = await call();
                 return new ContentResult
                 {
@@ -39,10 +39,10 @@ namespace CartaNoAdeudoApi.API.Controllers
             }
             catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
             {
-                logger.LogError(ex, "SIGA no disponible durante {Operacion}.", operacion);
+                logger.LogError(ex, "Carta no adeudo no disponible durante {Operacion}.", operacion);
                 return Problem(
                     statusCode: StatusCodes.Status503ServiceUnavailable,
-                    title: "SIGA no disponible",
+                    title: "Carta no adeudo no disponible",
                     detail: "No se pudo contactar al proveedor de identidad. Intenta de nuevo en unos segundos.");
             }
         }
