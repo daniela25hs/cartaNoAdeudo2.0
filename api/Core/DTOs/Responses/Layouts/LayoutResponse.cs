@@ -1,7 +1,7 @@
 namespace CartaNoAdeudoApi.Core.DTOs.Responses.Layouts
 {
     public record LayoutResponse(
-        Guid Id,
+        int Id,
         string? Descripcion,
 
         /// <summary>Nombre / ruta del archivo .docx almacenado (Layout.Archivo).</summary>
@@ -14,7 +14,7 @@ namespace CartaNoAdeudoApi.Core.DTOs.Responses.Layouts
     );
 
     public record LayoutListItemResponse(
-        Guid Id,
+        int Id,
         string? Descripcion,
         DateOnly VigenciaInicio,
         DateOnly VigenciaFin,

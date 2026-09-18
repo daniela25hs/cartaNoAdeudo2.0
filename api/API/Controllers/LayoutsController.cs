@@ -7,7 +7,7 @@ using CartaNoAdeudoApi.Core.Interfaces;
 namespace CartaNoAdeudoApi.API.Controllers
 {
     /// <summary>
-    /// Administración de layouts .docx (RF-002): alta, edición y activación de la
+    /// Administración de layouts: alta, edición y activación de la
     /// plantilla que usa la firma electrónica para generar la carta. Solo la capa API
     /// conoce <see cref="IFormFile"/>; el servicio trabaja con <see cref="Stream"/>.
     /// </summary>
@@ -20,8 +20,8 @@ namespace CartaNoAdeudoApi.API.Controllers
         public async Task<IActionResult> Listar(CancellationToken ct) =>
             Ok(await layoutService.ListarAsync(ct));
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> ObtenerPorId(Guid id, CancellationToken ct) =>
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> ObtenerPorId(int id, CancellationToken ct) =>
             Ok(await layoutService.ObtenerAsync(id, ct));
 
         [HttpPost("marcadores")]
@@ -45,9 +45,9 @@ namespace CartaNoAdeudoApi.API.Controllers
             return CreatedAtAction(nameof(ObtenerPorId), new { id = resultado.Id }, resultado);
         }
 
-        [HttpPut("{id:guid}")]
+        [HttpPut("{id:int}")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Actualizar(Guid id, [FromForm] ActualizarLayoutRequest request, IFormFile? archivo, CancellationToken ct)
+        public async Task<IActionResult> Actualizar(int id, [FromForm] ActualizarLayoutRequest request, IFormFile? archivo, CancellationToken ct)
         {
             if (archivo is not null)
                 ValidarExtensionDocx(archivo);
@@ -56,8 +56,8 @@ namespace CartaNoAdeudoApi.API.Controllers
             return Ok(await layoutService.ActualizarAsync(id, request, stream, ct));
         }
 
-        [HttpPatch("{id:guid}/toggle")]
-        public async Task<IActionResult> ToggleActivo(Guid id, CancellationToken ct)
+        [HttpPatch("{id:int}/toggle")]
+        public async Task<IActionResult> ToggleActivo(int id, CancellationToken ct)
         {
             await layoutService.ToggleActivoAsync(id, ct);
             return NoContent();

@@ -17,16 +17,16 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
     {
         public async Task<IReadOnlyList<LayoutListItemResponse>> ListarAsync(CancellationToken ct = default)
         {
-            var layouts = await uow.Repository<Layout>().GetAllAsync(ct);
+            var layouts = await uow.Layouts.GetAllAsync(ct);
             return layouts
                 .OrderByDescending(l => l.FechaHora)
                 .Select(l => new LayoutListItemResponse(l.Id, l.Descripcion, l.FechaInicioAutorizada, l.FechaFinAutorizada, l.Activo))
                 .ToList();
         }
 
-        public async Task<LayoutResponse> ObtenerAsync(Guid id, CancellationToken ct = default)
+        public async Task<LayoutResponse> ObtenerAsync(int id, CancellationToken ct = default)
         {
-            var layout = await uow.Repository<Layout>().GetByIdAsync(id, ct)
+            var layout = await uow.Layouts.GetByIdAsync(id, ct)
                 ?? throw new NotFoundException(nameof(Layout), id);
 
             var marcadores = await ExtraerMarcadoresAsync(layout.Archivo, ct);
@@ -38,7 +38,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
             var contenido = await LeerContenidoAsync(archivo, ct);
             var marcadores = await marcadorExtractor.ExtraerAsync(new MemoryStream(contenido), ct);
             return EvaluarMarcadores(marcadores);
-        }
+        }  
 
         public async Task<LayoutResponse> RegistrarAsync(RegistrarLayoutRequest request, Stream archivo, CancellationToken ct = default)
         {
@@ -64,15 +64,15 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
             if (layout.Activo)
                 await DesactivarLayoutsSolapadosAsync(layout, ct);
 
-            await uow.Repository<Layout>().AddAsync(layout, ct);
+            await uow.Layouts.AddAsync(layout, ct);
             await uow.SaveAsync(ct);
 
             return ToResponse(layout, marcadores);
         }
 
-        public async Task<LayoutResponse> ActualizarAsync(Guid id, ActualizarLayoutRequest request, Stream? archivo, CancellationToken ct = default)
+        public async Task<LayoutResponse> ActualizarAsync(int id, ActualizarLayoutRequest request, Stream? archivo, CancellationToken ct = default)
         {
-            var layout = await uow.Repository<Layout>().GetByIdAsync(id, ct)
+            var layout = await uow.Layouts.GetByIdAsync(id, ct)
                 ?? throw new NotFoundException(nameof(Layout), id);
 
             layout.Descripcion = request.Descripcion;
@@ -102,15 +102,15 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
 
             await ValidarEntidadAsync(layout, ct);
 
-            uow.Repository<Layout>().Update(layout);
+            uow.Layouts.Update(layout);
             await uow.SaveAsync(ct);
 
             return ToResponse(layout, marcadores);
         }
 
-        public async Task ToggleActivoAsync(Guid id, CancellationToken ct = default)
+        public async Task ToggleActivoAsync(int id, CancellationToken ct = default)
         {
-            var layout = await uow.Repository<Layout>().GetByIdAsync(id, ct)
+            var layout = await uow.Layouts.GetByIdAsync(id, ct)
                 ?? throw new NotFoundException(nameof(Layout), id);
 
             if (!layout.Activo)
@@ -125,7 +125,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
             }
 
             layout.Activo = !layout.Activo;
-            uow.Repository<Layout>().Update(layout);
+            uow.Layouts.Update(layout);
             await uow.SaveAsync(ct);
         }
 
@@ -135,7 +135,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
         /// </summary>
         private async Task DesactivarLayoutsSolapadosAsync(Layout nuevo, CancellationToken ct)
         {
-            var solapados = await uow.Repository<Layout>().FindAsync(l =>
+            var solapados = await uow.Layouts.FindAsync(l =>
                 l.Activo && l.Id != nuevo.Id &&
                 l.FechaInicioAutorizada <= nuevo.FechaFinAutorizada &&
                 nuevo.FechaInicioAutorizada <= l.FechaFinAutorizada, ct);
@@ -143,7 +143,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
             foreach (var l in solapados)
             {
                 l.Activo = false;
-                uow.Repository<Layout>().Update(l);
+                uow.Layouts.Update(l);
             }
         }
 

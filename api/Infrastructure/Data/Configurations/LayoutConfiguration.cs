@@ -10,6 +10,8 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Configurations
         {
             builder.ToTable("layout", "cat");
 
+            builder.HasKey(l => l.Id);
+
             builder.Property(l => l.Archivo).HasMaxLength(500).IsRequired();
             builder.Property(l => l.Descripcion).HasMaxLength(500);
 

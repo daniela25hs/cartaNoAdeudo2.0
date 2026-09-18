@@ -6,8 +6,7 @@
     "start": "ng serve",
     "build": "ng build -c development && npm run postbuild",
     "build:qa": "ng build -c qa && npm run postbuild",
-    "build:prod": "ng build -c production && npm run postbuild",
-    "watch": "ng build --watch --configuration qa",
+    "build:prod": "ng build -c production && npm run postbuild",    "watch": "ng build --watch --configuration qa",
     "test": "ng test",
     "postbuild": "node postbuild.js"
   },

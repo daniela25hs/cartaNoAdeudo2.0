@@ -53,7 +53,8 @@ export const routes: Routes = [
 	{
 		path: 'app',
 		component: MainLayoutComponent,
-		canActivate: [authGuard],
+		// TODO: reactivar cuando el login vuelva a validar credenciales.
+		// canActivate: [authGuard],
 		canActivateChild: [rolePermissionsChildGuard],
 		children: [
 			{

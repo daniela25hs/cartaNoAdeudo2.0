@@ -4,10 +4,10 @@
 // (assets/images) — cámbialos si tu dependencia usa otra.
 export const AppTexts = {
 	page: {
-		title: 'APP',
-		subtitle: 'Sistema',
-		description: 'Descripción de la aplicación.',
-		footerAddress: '',
+		title: 'Carta No Adeudo',
+		subtitle: 'Sistema de generación de carta de no adeudo para dependencias del Gobierno del Estado de Sonora',
+		description: 'Es la herramienta electrónica que permite a las dependencias del Gobierno del Estado de Sonora generar cartas de no adeudo de manera rápida y segura.	',
+		footerAddress: 'Centro de Gobierno, Edificio Sonora, Primer Piso, Ala Norte, Blvd. Paseo Río Sonora y Comonfort, Col. Villa de Seris, C.P. 83280, Hermosillo, Sonora, México.',
 		logoLeft: {
 			image: 'assets/images/logo-sonora-white.svg',
 			url: 'https://www.sonora.gob.mx',

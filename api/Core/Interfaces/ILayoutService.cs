@@ -13,13 +13,13 @@ namespace CartaNoAdeudoApi.Core.Interfaces
     public interface ILayoutService
     {
         Task<IReadOnlyList<LayoutListItemResponse>> ListarAsync(CancellationToken ct = default);
-        Task<LayoutResponse> ObtenerAsync(Guid id, CancellationToken ct = default);
+        Task<LayoutResponse> ObtenerAsync(int id, CancellationToken ct = default);
 
         /// <summary>Previsualiza los marcadores de un .docx sin guardar nada (para validar antes de dar de alta).</summary>
         Task<LayoutMarcadoresResponse> PrevisualizarMarcadoresAsync(Stream archivo, CancellationToken ct = default);
 
         Task<LayoutResponse> RegistrarAsync(RegistrarLayoutRequest request, Stream archivo, CancellationToken ct = default);
-        Task<LayoutResponse> ActualizarAsync(Guid id, ActualizarLayoutRequest request, Stream? archivo, CancellationToken ct = default);
-        Task ToggleActivoAsync(Guid id, CancellationToken ct = default);
+        Task<LayoutResponse> ActualizarAsync(int id, ActualizarLayoutRequest request, Stream? archivo, CancellationToken ct = default);
+        Task ToggleActivoAsync(int id, CancellationToken ct = default);
     }
 }

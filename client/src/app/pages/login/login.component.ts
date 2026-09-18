@@ -35,14 +35,14 @@ export class LoginComponent implements OnInit {
 	}
 
 	async login() {
-		if (!this.email.trim() || !this.password.trim()) {
+		/*if (!this.email.trim() || !this.password.trim()) {
 			return cAlert('Ingrese un usuario y contraseña válido', {
 				icon: 'error',
 			});
 		}
 		const res = await this._auth.login(this.email, this.password);
 
-		if (!res.success || !res.data) {
+		if (!res.success || !res.data)
 			cAlert(res.error || 'Usuario o contraseña incorrectos', {
 				icon: 'error',
 			});
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
 			nombre: res.data.nombre,
 			email: res.data.email,
 			roles: res.data.roles,
-		});
+		});*/
 		this.router.navigate(['/app']);
 	}
 

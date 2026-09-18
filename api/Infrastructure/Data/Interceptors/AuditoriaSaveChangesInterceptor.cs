@@ -33,7 +33,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Interceptors
             var ahora = DateTimeOffset.UtcNow;
             var usuarioId = currentUser.UserId;
 
-            foreach (var entry in context.ChangeTracker.Entries<AuditableEntity>())
+            foreach (var entry in context.ChangeTracker.Entries<IAuditable>())
             {
                 switch (entry.State)
                 {
