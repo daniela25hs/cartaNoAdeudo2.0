@@ -1,0 +1,99 @@
+<app-page-content pageTitle="Tareas">
+	<div class="card">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h5 class="card-title mb-0">Solicitudes de firma</h5>
+				<div class="btn-group" role="group">
+					<button
+						type="button"
+						class="btn btn-sm"
+						[class.btn-primary]="soloErrores()"
+						[class.btn-outline-primary]="!soloErrores()"
+						(click)="cambiarFiltro(true)"
+					>
+						Con error
+					</button>
+					<button
+						type="button"
+						class="btn btn-sm"
+						[class.btn-primary]="!soloErrores()"
+						[class.btn-outline-primary]="soloErrores()"
+						(click)="cambiarFiltro(false)"
+					>
+						Todas
+					</button>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover align-middle">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>RFC</th>
+							<th>Tipo</th>
+							<th>Folio</th>
+							<th>Estatus</th>
+							<th>Intentos</th>
+							<th>Último error</th>
+							<th class="text-end">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (s of solicitudes(); track s.id) {
+							<tr>
+								<td>{{ s.nombre }}</td>
+								<td>{{ s.rfc }}</td>
+								<td>{{ s.tipoCarta }}</td>
+								<td>{{ s.folio || "—" }}</td>
+								<td>
+									<span
+										class="badge"
+										[class.bg-success]="s.estatus === EstatusSolicitud.Firmada"
+										[class.bg-danger]="s.estatus === EstatusSolicitud.ErrorDefinitivo"
+										[class.bg-warning]="s.estatus === EstatusSolicitud.SolicitudFirma"
+										[class.text-dark]="s.estatus === EstatusSolicitud.SolicitudFirma"
+										[class.bg-secondary]="s.estatus === EstatusSolicitud.Pendiente"
+									>
+										{{
+											s.estatus === EstatusSolicitud.Firmada
+												? "Firmada"
+												: s.estatus === EstatusSolicitud.ErrorDefinitivo
+													? "Error al firmar"
+													: s.estatus === EstatusSolicitud.SolicitudFirma
+														? "En proceso de firma"
+														: "Pendiente"
+										}}
+									</span>
+								</td>
+								<td>{{ s.intentos }}</td>
+								<td class="text-danger">
+									{{ s.ultimoError || "—" }}
+								</td>
+								<td class="text-end">
+									@if (s.estatus === EstatusSolicitud.ErrorDefinitivo) {
+										<button
+											type="button"
+											class="btn btn-sm btn-warning"
+											[disabled]="reintentando() === s.id"
+											(click)="reintentar(s)"
+										>
+											<span class="mdi mdi-refresh"></span>
+											{{ reintentando() === s.id ? "Reintentando..." : "Reintentar firma" }}
+										</button>
+									}
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td colspan="8" class="text-center text-muted py-4">
+									{{ soloErrores() ? "No hay solicitudes con error." : "No hay solicitudes registradas." }}
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</app-page-content>

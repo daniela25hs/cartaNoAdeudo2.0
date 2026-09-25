@@ -95,6 +95,10 @@ const extractError = (res: HttpErrorResponse): string => {
 	else if (Array.isArray(res.error?.errors) && res.error.errors.length > 0) {
 		message = res.error.errors.join(', ');
 	}
+	// 4b. ReprocesoItemResultado (409 al reintentar una solicitud): { motivo: "..." }
+	else if (res.error?.motivo) {
+		message = res.error.motivo;
+	}
 	// 5. String error response (intenta parsear JSON)
 	else if (typeof res.error === 'string') {
 		const parsed = hasJsonStructure(res.error);

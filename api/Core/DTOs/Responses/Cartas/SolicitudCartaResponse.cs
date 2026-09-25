@@ -13,7 +13,11 @@ namespace CartaNoAdeudoApi.Core.DTOs.Responses.Cartas
         bool Vencida,
         int Intentos,
         DateTimeOffset? FechaFirmado,
-        DateTimeOffset FechaHora
+        DateTimeOffset FechaHora,
+
+        /// <summary>Mensaje del último intento de firma fallido (<c>Tareas.MensajeError</c>),
+        /// para mostrar por qué quedó en <c>ErrorDefinitivo</c> sin tener que abrir el detalle.</summary>
+        string? UltimoError
     );
 
     public record SolicitudDetalleResponse(

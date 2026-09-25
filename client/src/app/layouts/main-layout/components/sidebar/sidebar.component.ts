@@ -11,7 +11,7 @@ declare const $: any;
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [SidebarItemComponent, RemoveHostDirective, PageTextsPipe]
 })
 export class SidebarComponent implements OnInit, AfterViewInit {

@@ -25,10 +25,11 @@ try
     builder.Services.AddRepositories();
     builder.Services.AddAppServices();
     builder.Services.AddValidators();
-    builder.Services.AddFirmaContraloria(builder.Configuration);
     builder.Services.AddLayoutStorage(builder.Configuration);
-    // TODO: restaurar cuando exista el servicio de PDF (ver ServiceExtensions.cs).
-    // builder.Services.AddPdfGeneration(builder.Configuration);
+    builder.Services.AddFirmanteStorage(builder.Configuration);
+    builder.Services.AddTareaFirma(builder.Configuration);
+    builder.Services.AddCartaDocumento(builder.Configuration);
+    builder.Services.AddEmail(builder.Configuration);
     builder.Services.AddCorsPolicy(builder.Configuration);
     builder.Services.AddAuthorization();
 

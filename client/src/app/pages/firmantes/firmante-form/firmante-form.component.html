@@ -1,0 +1,112 @@
+<div class="firmante-form">
+	<div class="row g-3">
+		<div class="col-12">
+			<app-input label="Género">
+				<app-select
+					[items]="generoOptions"
+					keyField="id"
+					descriptionField="name"
+					[(value)]="generoSeleccionado"
+					[required]="true"
+				></app-select>
+			</app-input>
+		</div>
+		<div class="col-12">
+			<app-input label="Puesto">
+				<input
+					type="text"
+					class="form-control"
+					name="puesto"
+					[(ngModel)]="puesto"
+				/>
+			</app-input>
+		</div>
+		<div class="col-6">
+			<app-input label="Vigencia operativa — inicio">
+				<input
+					type="date"
+					class="form-control"
+					name="vigenciaInicio"
+					required
+					[(ngModel)]="vigenciaInicio"
+				/>
+			</app-input>
+		</div>
+		<div class="col-6">
+			<app-input label="Vigencia operativa — fin">
+				<input
+					type="date"
+					class="form-control"
+					name="vigenciaFin"
+					required
+					[(ngModel)]="vigenciaFin"
+				/>
+			</app-input>
+		</div>
+		<div class="col-12">
+			<app-input
+				[label]="
+					esEdicion
+						? 'Certificado (.pfx) — opcional, reemplaza el actual'
+						: 'Certificado (.pfx)'
+				"
+			>
+				<input
+					type="file"
+					class="form-control"
+					accept=".pfx,.p12"
+					[required]="!esEdicion"
+					(change)="onArchivoSeleccionado($event)"
+				/>
+			</app-input>
+		</div>
+		<div class="col-12">
+			<app-input
+				[label]="
+					esEdicion
+						? 'Contraseña — solo si adjuntas un nuevo PFX o quieres actualizarla'
+						: 'Contraseña del certificado'
+				"
+			>
+				<input
+					type="password"
+					class="form-control"
+					name="contrasena"
+					[required]="!esEdicion"
+					[(ngModel)]="contrasena"
+				/>
+			</app-input>
+		</div>
+		@if (!esEdicion) {
+			<div class="col-12 form-check">
+				<input
+					type="checkbox"
+					class="form-check-input"
+					id="firmanteActivo"
+					name="activo"
+					[(ngModel)]="activo"
+				/>
+				<label class="form-check-label" for="firmanteActivo">Activo</label>
+			</div>
+		}
+	</div>
+
+	<div class="d-flex justify-content-end gap-2 mt-4">
+		<button
+			type="button"
+			class="btn btn-secondary"
+			[disabled]="guardando()"
+			(click)="cancelar()"
+		>
+			Cancelar
+		</button>
+		<button
+			type="button"
+			class="btn btn-warning"
+			[disabled]="guardando()"
+			(click)="guardar()"
+		>
+			{{ guardando() ? "Guardando..." : "Guardar" }}
+		</button>
+	</div>
+</div>

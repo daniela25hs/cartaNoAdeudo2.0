@@ -1,0 +1,73 @@
+<app-page-content pageTitle="Plantillas de carta de no adeudo">
+	<div class="card">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h5 class="card-title mb-0">Plantillas registradas</h5>
+				<button type="button" class="btn btn-warning" (click)="nuevo()">
+					<span class="mdi mdi-file-plus-outline"></span> Nueva plantilla
+				</button>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover align-middle">
+					<thead>
+						<tr>
+							<th>Descripción</th>
+							<th>Vigencia</th>
+							<th class="text-end">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (l of layouts(); track l.id) {
+							<tr>
+								<td>{{ l.descripcion || "—" }}</td>
+								<td>{{ l.vigenciaInicio }} — {{ l.vigenciaFin }}</td>
+								<td class="text-end">
+									<div
+										class="d-flex justify-content-end align-items-center gap-3"
+									>
+										<div
+											class="form-check form-switch mb-0"
+											[title]="l.activo ? 'Desactivar' : 'Activar'"
+										>
+											<input
+												type="checkbox"
+												class="form-check-input"
+												role="switch"
+												style="width: 2rem; height: 1rem; cursor: pointer"
+												[checked]="l.activo"
+												(click)="toggle($event, l)"
+											/>
+										</div>
+										<button
+											type="button"
+											class="btn btn-sm btn-link p-0"
+											title="Visualizar"
+											(click)="ver(l)"
+										>
+											<span class="mdi mdi-eye-outline fs-5"></span>
+										</button>
+										<button
+											type="button"
+											class="btn btn-sm btn-link p-0"
+											title="Editar"
+											(click)="editar(l.id)"
+										>
+											<span class="mdi mdi-pencil-outline fs-5"></span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td colspan="3" class="text-center text-muted py-4">
+									No hay plantillas registrados.
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</app-page-content>

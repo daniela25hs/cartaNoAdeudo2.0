@@ -33,6 +33,14 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
             return ToResponse(layout, marcadores);
         }
 
+        public async Task<Stream> ObtenerArchivoAsync(int id, CancellationToken ct = default)
+        {
+            var layout = await uow.Layouts.GetByIdAsync(id, ct)
+                ?? throw new NotFoundException(nameof(Layout), id);
+
+            return await storage.AbrirAsync(layout.Archivo, ct);
+        }
+
         public async Task<LayoutMarcadoresResponse> PrevisualizarMarcadoresAsync(Stream archivo, CancellationToken ct = default)
         {
             var contenido = await LeerContenidoAsync(archivo, ct);
@@ -171,7 +179,20 @@ namespace CartaNoAdeudoApi.Infrastructure.Services
         {
             var reconocidos = marcadoresEnDocx.Where(LayoutMarcadores.Reconocidos.Contains).ToList();
             var noReconocidos = marcadoresEnDocx.Except(reconocidos).ToList();
+
             var faltantes = LayoutMarcadores.Obligatorios.Except(marcadoresEnDocx).ToList();
+
+            // La fecha de firma es obligatoria pero se puede satisfacer con cualquiera de las
+            // alternativas de LayoutMarcadores.ObligatoriosAlternativos (p. ej. FechaFirmado,
+            // o Dia+Mes+Anio); si ninguna alternativa está completa, se reportan como
+            // faltantes los marcadores de la alternativa más cercana a completarse.
+            if (!LayoutMarcadores.ObligatoriosAlternativos.Any(alt => alt.All(marcadoresEnDocx.Contains)))
+            {
+                var masCercana = LayoutMarcadores.ObligatoriosAlternativos
+                    .OrderBy(alt => alt.Except(marcadoresEnDocx).Count())
+                    .First();
+                faltantes.AddRange(masCercana.Except(marcadoresEnDocx));
+            }
 
             return new LayoutMarcadoresResponse(reconocidos, noReconocidos, faltantes, faltantes.Count == 0);
         }

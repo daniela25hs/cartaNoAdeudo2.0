@@ -6,7 +6,7 @@ import { InputCodeItemChange, InputCodeItemComponent } from './input-code-item/i
     selector: 'app-input-code',
     imports: [InputCodeItemComponent],
     templateUrl: './input-code.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     styleUrls: ['./input-code.component.scss']
 })
 export class InputCodeComponent implements AfterViewInit {

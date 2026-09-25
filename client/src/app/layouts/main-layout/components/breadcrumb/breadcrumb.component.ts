@@ -8,7 +8,7 @@ import { SideBarItem } from '../../../../core/models';
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     styleUrls: ['./breadcrumb.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [RouterLink]
 })
 export class BreadcrumbComponent implements OnInit {

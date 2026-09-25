@@ -8,7 +8,7 @@ import { PermissionControlDirective, RemoveHostDirective } from '../../../../sha
     selector: 'app-sidebar-item',
     templateUrl: './sidebar-item.component.html',
     styleUrls: ['./sidebar-item.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [
         PermissionControlDirective,
         RouterLinkActive,

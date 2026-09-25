@@ -86,6 +86,41 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     b.ToTable("config", "bit");
                 });
 
+            modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Bitacora.TareaHistorial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("estado");
+
+                    b.Property<DateTimeOffset>("Fecha")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha");
+
+                    b.Property<Guid>("IdTarea")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_tarea");
+
+                    b.Property<string>("Mensaje")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("mensaje");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdTarea");
+
+                    b.ToTable("tarea_historial", "bit");
+                });
+
             modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Cartas.Archivos", b =>
                 {
                     b.Property<Guid>("Id")
@@ -155,6 +190,12 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                         .HasColumnType("date")
                         .HasColumnName("inicio_vigencia");
 
+                    b.Property<int>("Intentos")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0)
+                        .HasColumnName("intentos");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -197,9 +238,12 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id_firma");
 
+                    b.Property<string>("CadenaOriginal")
+                        .HasColumnType("text")
+                        .HasColumnName("cadena_original");
+
                     b.Property<string>("Certificado")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasColumnType("text")
                         .HasColumnName("certificado");
 
                     b.Property<string>("Descripcion")
@@ -685,6 +729,17 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     b.Navigation("Dato");
                 });
 
+            modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Bitacora.TareaHistorial", b =>
+                {
+                    b.HasOne("CartaNoAdeudoApi.Core.Entities.Cartas.Tareas", "Tarea")
+                        .WithMany("Historial")
+                        .HasForeignKey("IdTarea")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tarea");
+                });
+
             modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Cartas.Archivos", b =>
                 {
                     b.HasOne("CartaNoAdeudoApi.Core.Entities.Cartas.Datos", "Dato")
@@ -746,6 +801,11 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     b.Navigation("Firmas");
 
                     b.Navigation("Tareas");
+                });
+
+            modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Cartas.Tareas", b =>
+                {
+                    b.Navigation("Historial");
                 });
 
             modelBuilder.Entity("CartaNoAdeudoApi.Core.Entities.Cartas.TiposCartas", b =>

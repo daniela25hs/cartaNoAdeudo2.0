@@ -1,0 +1,119 @@
+<app-page-content pageTitle="Solicitar carta de no adeudo">
+	<div class="card">
+		<div class="card-body">
+			@if (resultado(); as r) {
+				<div class="text-center py-4">
+					<span class="mdi mdi-check-circle-outline text-success" style="font-size: 3rem"></span>
+					<h5 class="mt-3">Solicitud registrada</h5>
+					<p class="text-muted mb-1">Identificador: <code>{{ r.identificadorSolicitud }}</code></p>
+					<p class="mb-4">
+						Estatus:
+						<span class="badge bg-info text-dark">{{ estatusLabels[r.estatus] }}</span>
+					</p>
+					<button type="button" class="btn btn-warning" (click)="nuevaSolicitud()">
+						<span class="mdi mdi-plus"></span> Nueva solicitud
+					</button>
+				</div>
+			} @else {
+				<h5 class="card-title mb-3">Datos de la solicitud</h5>
+
+				<div class="row g-3">
+					<div class="col-md-4">
+						<app-input label="RFC">
+							<input
+								type="text"
+								class="form-control text-uppercase"
+								name="rfc"
+								maxlength="13"
+								required
+								[(ngModel)]="rfc"
+							/>
+						</app-input>
+					</div>
+					<div class="col-md-8">
+						<app-input label="Nombre">
+							<input
+								type="text"
+								class="form-control"
+								name="nombre"
+								required
+								[(ngModel)]="nombre"
+							/>
+						</app-input>
+					</div>
+					<div class="col-md-4">
+						<app-input label="RO">
+							<input
+								type="text"
+								class="form-control"
+								name="ro"
+								required
+								[(ngModel)]="ro"
+							/>
+						</app-input>
+					</div>
+					<div class="col-md-4">
+						<app-input label="Tipo de carta">
+							<app-select
+								[items]="tiposCarta()"
+								keyField="clave"
+								descriptionField="label"
+								[disabled]="cargandoTipos()"
+								[placeholder]="cargandoTipos() ? 'Cargando...' : 'Seleccione tipo de carta'"
+								[(value)]="tipoCartaSeleccionado"
+								[required]="true"
+							></app-select>
+						</app-input>
+					</div>
+					<div class="col-md-4">
+						<app-input label="Inicio de vigencia">
+							<input
+								type="date"
+								class="form-control"
+								name="inicioVigencia"
+								required
+								[(ngModel)]="inicioVigencia"
+							/>
+						</app-input>
+					</div>
+
+					@if (esAlcoholes()) {
+						<div class="col-md-6">
+							<app-input label="Licencia de alcoholes">
+								<input
+									type="text"
+									class="form-control"
+									name="licAlcoholes"
+									required
+									[(ngModel)]="licAlcoholes"
+								/>
+							</app-input>
+						</div>
+					}
+					<div class="col-md-6">
+						<app-input label="Correo electrónico">
+							<input
+								type="email"
+								class="form-control"
+								name="email"
+								required
+								[(ngModel)]="email"
+							/>
+						</app-input>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-end mt-4">
+					<button
+						type="button"
+						class="btn btn-warning"
+						[disabled]="enviando() || cargandoTipos()"
+						(click)="solicitar()"
+					>
+						{{ enviando() ? "Enviando..." : "Solicitar carta" }}
+					</button>
+				</div>
+			}
+		</div>
+	</div>
+</app-page-content>

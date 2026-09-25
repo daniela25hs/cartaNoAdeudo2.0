@@ -10,7 +10,7 @@ import { SelectModule } from 'primeng/select';
         FormsModule,
     ],
     templateUrl: './select.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     styleUrls: ['./select.component.scss']
 })
 export class SelectComponent implements OnInit, OnChanges {

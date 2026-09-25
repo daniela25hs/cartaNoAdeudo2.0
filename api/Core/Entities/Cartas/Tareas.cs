@@ -1,3 +1,4 @@
+using CartaNoAdeudoApi.Core.Entities.Bitacora;
 using CartaNoAdeudoApi.Core.Entities.Catalogos;
 
 namespace CartaNoAdeudoApi.Core.Entities.Cartas
@@ -12,5 +13,6 @@ namespace CartaNoAdeudoApi.Core.Entities.Cartas
         public string? MensajeError { get; set; }
         public Datos? Dato { get; set; }
         public EstadoTarea? Estado { get; set; }
+        public ICollection<TareaHistorial> Historial { get; set; } = new List<TareaHistorial>();
     }
 }

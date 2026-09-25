@@ -5,7 +5,7 @@ import { PageTextsPipe } from '../../../shared/pipes';
     selector: 'app-contact-info',
     templateUrl: './contact-info.component.html',
     styleUrls: ['./contact-info.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [PageTextsPipe]
 })
 export class ContactInfoComponent {

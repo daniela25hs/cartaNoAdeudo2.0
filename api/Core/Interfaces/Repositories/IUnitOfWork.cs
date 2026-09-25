@@ -14,6 +14,7 @@ namespace CartaNoAdeudoApi.Core.Interfaces.Repositories
         ITipoCartaRepository TiposCartas { get; }
         ILayoutRepository Layouts { get; }
         IEstadoTareaRepository EstadosTarea { get; }
+        ITareaHistorialRepository TareaHistorial { get; }
         Task<int> SaveAsync(CancellationToken ct = default);
         Task<ITransaction> BeginTransactionAsync(CancellationToken ct = default);
     }

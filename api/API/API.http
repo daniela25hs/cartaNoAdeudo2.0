@@ -15,6 +15,75 @@ Accept: {{contentType}}
 
 
 ### ─────────────────────────────────────────────────────────────────────────
+###  Cartas — alta + firma + reintentos en background (ver ICartaService /
+###  TareaFirmaWorker / TareaFirmaRecovery). CartasController no tiene
+###  [Authorize] todavía, así que no hace falta @token para nada de aquí.
+### ─────────────────────────────────────────────────────────────────────────
+
+### Solicitar carta: da de alta, asigna folio y hace el 1er intento de firma
+### de inmediato. Si NO hay un Firmante activo con PFX cargado (ver
+### FirmantesController), este intento falla, Estatus se queda en
+### "SolicitudFirma" (=1) y la solicitud se encola sola para 2 reintentos
+### más en background (30s de espera entre cada uno) — justo el escenario
+### que necesitas para probar el recovery de abajo.
+### Guarda el id en @idSolicitud para las siguientes requests.
+# @name solicitar
+POST {{host}}/api/cartas
+Content-Type: {{contentType}}
+
+{
+  "RFC": "XAXX010101000",
+  "NOMBRE": "Contribuyente de Prueba",
+  "RO": "RO-TEST-001",
+  "TipoCarta": "01",
+  "InicioVigencia": "2026-09-22",
+  "LicAlcoholes": null,
+  "email": "prueba@sonora.gob.mx"
+}
+
+### Ojo: Estatus llega como número (System.Text.Json serializa enums así por
+### default, sin JsonStringEnumConverter): 1=SolicitudFirma, 2=Firmada,
+### 3=Pendiente, 4=ErrorDefinitivo.
+@idSolicitud = {{solicitar.response.body.$.identificadorSolicitud}}
+
+### Recovery manual: reencola ahora mismo (sin reiniciar la app) todo lo que
+### siga en "SolicitudFirma" — intentos interrumpidos o esperando su
+### siguiente reintento. No toca lo que ya llegó a ErrorDefinitivo.
+### resetRetries=true además reinicia el contador de intentos de cada una.
+### Responde { "encoladas": <n>, "resetRetries": <bool> }.
+POST {{host}}/api/cartas/recovery?resetRetries=false
+Content-Type: {{contentType}}
+
+### Reprocesar UNA solicitud puntual — solo funciona si esa solicitud ya
+### agotó sus 3 intentos y quedó en ErrorDefinitivo (si todavía está dentro
+### de sus reintentos automáticos, regresa 409 explicando que ya la está
+### manejando el worker).
+POST {{host}}/api/cartas/{{idSolicitud}}/reprocesar
+Content-Type: {{contentType}}
+
+### Reprocesar TODAS las que estén en ErrorDefinitivo ahora mismo (sin
+### indicar ids).
+POST {{host}}/api/cartas/reprocesar
+Content-Type: {{contentType}}
+
+### Validar la carta (solo trae datos útiles una vez Firmada). A diferencia
+### de GenerarCartaRequest, ValidarCartaRequest NO tiene JsonPropertyName,
+### así que va en camelCase. Pide "ef" (entidad federativa) como [Required]
+### del DTO, pero OJO: CartaService.ValidarCartaAsync hoy solo filtra por
+### Rfc+Folio, ignora Ef en la búsqueda (vestigio de RF-005 legado, no lo
+### toqué). El Folio no viene en la respuesta de /api/cartas, sácalo de la
+### BD o de logs mientras no haya un GET de detalle.
+# POST {{host}}/api/cartas/validar
+# Content-Type: {{contentType}}
+#
+# {
+#   "rfc": "XAXX010101000",
+#   "ef": 26,
+#   "folio": 1
+# }
+
+
+### ─────────────────────────────────────────────────────────────────────────
 ###  SIGA (solo funciona con AddSigaAuth / AddSigaAuthProxy descomentados
 ###  en Program.cs — ver docs/INTEGRACION_SIGA.md)
 ### ─────────────────────────────────────────────────────────────────────────

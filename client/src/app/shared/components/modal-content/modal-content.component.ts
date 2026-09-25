@@ -6,7 +6,7 @@ declare const $: any;
 	selector: 'app-modal-content',
 	standalone: true,
 	templateUrl: './modal-content.component.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.Default,
 	styleUrls: ['./modal-content.component.scss'],
 })
 export class ModalContentComponent implements OnInit {

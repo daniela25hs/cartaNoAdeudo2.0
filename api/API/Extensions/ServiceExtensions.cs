@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -50,6 +51,29 @@ namespace CartaNoAdeudoApi.API.Extensions
         {
             services.AddScoped<ICartaService, CartaService>();
             services.AddScoped<ILayoutService, LayoutService>();
+            services.AddSingleton<ICertificadoFirmaService, CertificadoFirmaService>();
+            services.AddScoped<INotificacionSapService, NotificacionSapService>();
+            return services;
+        }
+
+        /// <summary>
+        /// Reintentos automáticos de firma en background (ver <c>TareaFirmaOptions</c>,
+        /// <c>TareaFirmaQueue</c>, <c>TareaFirmaWorker</c> y <c>TareaFirmaRecovery</c>).
+        /// Sección "TareaFirma" de appsettings.
+        /// </summary>
+        public static IServiceCollection AddTareaFirma(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<TareaFirmaOptions>(config.GetSection("TareaFirma"));
+
+            services.AddSingleton<ITareaFirmaQueue, TareaFirmaQueue>();
+            services.AddHostedService<TareaFirmaWorker>();
+
+            // Singleton (no solo AddHostedService) para poder inyectarla también en el
+            // controller, vía ITareaFirmaRecovery, y disparar la recuperación a mano sin
+            // reiniciar la app.
+            services.AddSingleton<TareaFirmaRecovery>();
+            services.AddSingleton<ITareaFirmaRecovery>(sp => sp.GetRequiredService<TareaFirmaRecovery>());
+            services.AddHostedService(sp => sp.GetRequiredService<TareaFirmaRecovery>());
             return services;
         }
 
@@ -73,6 +97,35 @@ namespace CartaNoAdeudoApi.API.Extensions
         }
 
         /// <summary>
+        /// Firmantes: .pfx en disco y contraseña cifrada con Data Protection. Sección
+        /// "FirmanteStorage"; rutas relativas se resuelven contra <c>AppContext.BaseDirectory</c>.
+        /// Las llaves de Data Protection se persisten en disco: sin ellas (o sin ese volumen en
+        /// Docker) las contraseñas guardadas dejan de poder descifrarse.
+        /// </summary>
+        public static IServiceCollection AddFirmanteStorage(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<FirmanteStorageOptions>(config.GetSection("FirmanteStorage"));
+            services.PostConfigure<FirmanteStorageOptions>(opt =>
+            {
+                opt.PfxPath = ResolverRuta(opt.PfxPath);
+                opt.LlavesProteccionPath = ResolverRuta(opt.LlavesProteccionPath);
+            });
+
+            var storage = config.GetSection("FirmanteStorage").Get<FirmanteStorageOptions>() ?? new FirmanteStorageOptions();
+            services.AddDataProtection()
+                .SetApplicationName("CartaNoAdeudoApi")
+                .PersistKeysToFileSystem(new DirectoryInfo(ResolverRuta(storage.LlavesProteccionPath)));
+
+            services.AddScoped<IPfxStorage, PfxStorage>();
+            services.AddScoped<IFirmanteService, FirmanteService>();
+            services.AddScoped<IFirmaCartaService, FirmaCartaService>();
+            return services;
+        }
+
+        private static string ResolverRuta(string ruta) =>
+            Path.IsPathRooted(ruta) ? ruta : Path.Combine(AppContext.BaseDirectory, ruta);
+
+        /// <summary>
         /// Registra los IValidator&lt;T&gt; de FluentValidation (Core/Utils/Validaciones) para
         /// poder inyectarlos donde se necesiten. No valida automáticamente los
         /// requests entrantes: hay que llamar validator.ValidateAsync(...) donde
@@ -84,39 +137,34 @@ namespace CartaNoAdeudoApi.API.Extensions
             return services;
         }
 
-        /// <summary>Cliente HTTP hacia "wsLicAlcoholes" (firma FEA vía Contraloría). Ver <see cref="IFirmaContraloriaService"/>.</summary>
-        public static IServiceCollection AddFirmaContraloria(this IServiceCollection services, IConfiguration config)
+        /// <summary>
+        /// PDF de la carta (RF-002/RF-003): combina el layout .docx activo con los datos de la
+        /// solicitud (<see cref="DocxMarcadorReplacer"/>) y convierte el resultado con
+        /// LibreOffice headless (<see cref="LibreOfficePdfConverter"/>, ver "Pdf:LibreOfficePath"
+        /// y el paquete libreoffice-writer del Dockerfile). Sección "Pdf" de appsettings.
+        /// </summary>
+        public static IServiceCollection AddCartaDocumento(this IServiceCollection services, IConfiguration config)
         {
-            services.Configure<FirmaContraloriaOptions>(config.GetSection("FirmaContraloria"));
-            services.AddHttpClient<IFirmaContraloriaService, FirmaContraloriaClient>((sp, client) =>
-            {
-                var options = sp.GetRequiredService<IOptions<FirmaContraloriaOptions>>().Value;
-                client.BaseAddress = new Uri(options.BaseUrl);
-                client.Timeout = TimeSpan.FromSeconds(options.TimeoutSegundos);
-            });
+            services.Configure<PdfOptions>(config.GetSection("Pdf"));
+
+            services.AddScoped<IDocxMarcadorReplacer, DocxMarcadorReplacer>();
+            services.AddScoped<IPdfConverter, LibreOfficePdfConverter>();
+            services.AddScoped<ICartaDocumentoService, CartaDocumentoService>();
             return services;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        //  PDF de la carta (RF-002/RF-003)
-        //
-        //  TODO: reimplementar tras la reescritura de entidades. Los tipos que
-        //  registraban este método (PdfOptions / IPdfGeneratorService /
-        //  CartaPdfGenerator) ya no existen en la solución. Al volver a crearlos,
-        //  restaurar este método y su llamada en Program.cs.
-        //
-        //  public static IServiceCollection AddPdfGeneration(this IServiceCollection services, IConfiguration config)
-        //  {
-        //      services.Configure<PdfOptions>(config.GetSection("Pdf"));
-        //      services.PostConfigure<PdfOptions>(opt =>
-        //      {
-        //          if (!Path.IsPathRooted(opt.AssetsPath))
-        //              opt.AssetsPath = Path.Combine(AppContext.BaseDirectory, opt.AssetsPath);
-        //      });
-        //      services.AddScoped<IPdfGeneratorService, CartaPdfGenerator>();
-        //      return services;
-        //  }
-        // ─────────────────────────────────────────────────────────────────────
+        /// <summary>
+        /// Correo de notificación al solicitante cuando su carta queda Firmada (ver
+        /// <c>CartaService.GenerarDocumentoYCorreoAsync</c>). Sección "Email" de appsettings;
+        /// las credenciales reales van por variables de entorno, nunca en el appsettings
+        /// versionado (mismo criterio que "Siga").
+        /// </summary>
+        public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<EmailOptions>(config.GetSection("Email"));
+            services.AddScoped<IEmailService, EmailService>();
+            return services;
+        }
 
         public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration config)
         {

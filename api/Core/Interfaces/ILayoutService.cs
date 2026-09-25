@@ -15,6 +15,9 @@ namespace CartaNoAdeudoApi.Core.Interfaces
         Task<IReadOnlyList<LayoutListItemResponse>> ListarAsync(CancellationToken ct = default);
         Task<LayoutResponse> ObtenerAsync(int id, CancellationToken ct = default);
 
+        /// <summary>Contenido del .docx almacenado, para descarga/visualización.</summary>
+        Task<Stream> ObtenerArchivoAsync(int id, CancellationToken ct = default);
+
         /// <summary>Previsualiza los marcadores de un .docx sin guardar nada (para validar antes de dar de alta).</summary>
         Task<LayoutMarcadoresResponse> PrevisualizarMarcadoresAsync(Stream archivo, CancellationToken ct = default);
 

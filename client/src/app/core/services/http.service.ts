@@ -51,6 +51,17 @@ export class HttpService {
 		return this.request<any>('PUT', url, { body: data });
 	}
 
+	// Para FormData: sin Content-Type explícito, el navegador arma el boundary
+	// multipart/form-data solo. Pasar headers vacíos evita que defaultHeaders()
+	// fuerce application/json.
+	POST_FORM(url: string, data: FormData) {
+		return this.request<any>('POST', url, { body: data, headers: new HttpHeaders() });
+	}
+
+	UPDATE_FORM(url: string, data: FormData) {
+		return this.request<any>('PUT', url, { body: data, headers: new HttpHeaders() });
+	}
+
 	request<T>(method: HttpMethodsType, url: string, options?: HttpClientOptionsType): Promise<T> {
 		if (options && !options.headers) {
 			options.headers = this.defaultHeaders()

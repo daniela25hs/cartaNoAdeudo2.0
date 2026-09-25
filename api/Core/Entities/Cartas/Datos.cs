@@ -21,6 +21,11 @@ namespace CartaNoAdeudoApi.Core.Entities.Cartas
         public DateTimeOffset? FechaFirmado { get; set; }
         public DateTimeOffset FechaHora { get; set; } = DateTimeOffset.UtcNow;
         public EstatusSolicitud Estatus { get; set; } = EstatusSolicitud.SolicitudFirma;
+
+        /// <summary>Cuántas veces se ha intentado firmar (ver <c>TareaFirmaOptions.MaxIntentos</c>
+        /// y <c>TareaFirmaWorker</c>). Al llegar al máximo, <see cref="Estatus"/> pasa a
+        /// <c>ErrorDefinitivo</c> y deja de reintentarse solo.</summary>
+        public int Intentos { get; set; }
         public TiposCartas? TipoCarta { get; set; }
         public Archivos? Archivo { get; set; }
         public ICollection<Tareas> Tareas { get; set; } = new List<Tareas>();

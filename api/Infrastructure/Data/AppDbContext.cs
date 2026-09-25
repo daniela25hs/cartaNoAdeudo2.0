@@ -29,6 +29,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Data
         // --- Esquema bit ---
         public DbSet<Bit.Carta> BitacoraCartas { get; set; }
         public DbSet<Bit.Config> BitacoraConfigs { get; set; }
+        public DbSet<Bit.TareaHistorial> TareaHistorial { get; set; }
 
         // --- Esquema sist ---
         public DbSet<Configuracion> Configuraciones { get; set; }

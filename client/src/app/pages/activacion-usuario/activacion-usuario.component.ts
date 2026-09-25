@@ -16,7 +16,7 @@ export type ActivacionMode = 'activar' | 'cambiar-password';
 	selector: 'app-activacion-usuario',
 	imports: [ReactiveFormsModule],
 	templateUrl: './activacion-usuario.component.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.Default,
 	styles: ``,
 })
 export class ActivacionUsuarioComponent implements OnInit {

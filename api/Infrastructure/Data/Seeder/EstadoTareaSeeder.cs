@@ -10,18 +10,27 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Seeder
         {
             try
             {
-                if (await context.EstadosTarea.AnyAsync())
-                    return;
-
-                var estados = new List<EstadoTarea>
+                var descripciones = new[]
                 {
-                    new() { Descripcion = EstadoTarea.Pendiente },
-                    new() { Descripcion = EstadoTarea.EnProceso },
-                    new() { Descripcion = EstadoTarea.Completada },
-                    new() { Descripcion = EstadoTarea.Error },
+                    EstadoTarea.Pendiente,
+                    EstadoTarea.EnProceso,
+                    EstadoTarea.Completada,
+                    EstadoTarea.Error,
+                    EstadoTarea.ErrorDefinitivo,
                 };
 
-                context.EstadosTarea.AddRange(estados);
+                // Por descripción (no AnyAsync) para que un estado agregado después
+                // (como ErrorDefinitivo) también se siembre en una BD ya sembrada antes.
+                var existentes = await context.EstadosTarea.Select(e => e.Descripcion).ToListAsync();
+
+                var faltantes = descripciones.Except(existentes)
+                    .Select(d => new EstadoTarea { Descripcion = d })
+                    .ToList();
+
+                if (faltantes.Count == 0)
+                    return;
+
+                context.EstadosTarea.AddRange(faltantes);
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)

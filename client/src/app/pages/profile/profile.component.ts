@@ -8,7 +8,7 @@ import { UserState } from '../../shared/states/user.state';
     selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [
         PageContentComponent,
         FormsModule,

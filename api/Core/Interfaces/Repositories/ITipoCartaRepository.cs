@@ -10,5 +10,6 @@ namespace CartaNoAdeudoApi.Core.Interfaces.Repositories
     public interface ITipoCartaRepository
     {
         Task<TiposCartas?> GetByClaveAsync(string clave, CancellationToken ct = default);
+        Task<IReadOnlyList<TiposCartas>> GetActivosAsync(CancellationToken ct = default);
     }
 }

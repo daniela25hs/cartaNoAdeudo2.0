@@ -9,7 +9,7 @@ export interface InputCodeItemChange {
     selector: 'app-input-code-item',
     imports: [],
     templateUrl: './input-code-item.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     styleUrls: ['./input-code-item.component.scss']
 })
 export class InputCodeItemComponent {

@@ -8,12 +8,11 @@ namespace CartaNoAdeudoApi.API.Controllers
 {
     /// <summary>
     /// Administración de layouts: alta, edición y activación de la
-    /// plantilla que usa la firma electrónica para generar la carta. Solo la capa API
-    /// conoce <see cref="IFormFile"/>; el servicio trabaja con <see cref="Stream"/>.
+    /// plantilla que usa la firma electrónica para generar la carta.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    // [Authorize] // TODO: reactivar junto con SIGA (última fase: usuarios). Ver docs/INTEGRACION_SIGA.md
     public class LayoutsController(ILayoutService layoutService) : ControllerBase
     {
         [HttpGet]
@@ -23,6 +22,13 @@ namespace CartaNoAdeudoApi.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ObtenerPorId(int id, CancellationToken ct) =>
             Ok(await layoutService.ObtenerAsync(id, ct));
+
+        [HttpGet("{id:int}/archivo")]
+        public async Task<IActionResult> ObtenerArchivo(int id, CancellationToken ct)
+        {
+            var contenido = await layoutService.ObtenerArchivoAsync(id, ct);
+            return File(contenido, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"layout-{id}.docx");
+        }
 
         [HttpPost("marcadores")]
         [Consumes("multipart/form-data")]

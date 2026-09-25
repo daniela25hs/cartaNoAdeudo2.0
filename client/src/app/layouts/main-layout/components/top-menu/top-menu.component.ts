@@ -10,7 +10,7 @@ import { UserState } from '../../../../shared/states/user.state';
     selector: 'app-top-menu',
     templateUrl: './top-menu.component.html',
     styleUrls: ['./top-menu.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [
         RouterLink,
         FormsModule,

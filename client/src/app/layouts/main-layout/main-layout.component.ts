@@ -14,7 +14,7 @@ import { SidebarComponent, TopMenuComponent } from './components';
 		padding: 3px !important;
 	}
 	`,
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [
         SidebarComponent,
         TopMenuComponent,

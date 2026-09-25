@@ -19,6 +19,11 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Configurations
                 .WithMany()
                 .HasForeignKey(t => t.IdEstado)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(t => t.Historial)
+                .WithOne(h => h.Tarea)
+                .HasForeignKey(h => h.IdTarea)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

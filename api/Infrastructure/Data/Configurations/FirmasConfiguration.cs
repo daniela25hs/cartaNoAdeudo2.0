@@ -14,7 +14,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Configurations
 
             builder.Property(f => f.Descripcion).HasMaxLength(500);
             builder.Property(f => f.Identificador).HasMaxLength(255);
-            builder.Property(f => f.Certificado).HasMaxLength(500);
+            // Certificado (base64 DER), CadenaOriginal y Firma sin límite: columnas text.
             builder.Property(f => f.HexSerie).HasMaxLength(255);
             builder.Property(f => f.FingerPrint).HasMaxLength(255);
 

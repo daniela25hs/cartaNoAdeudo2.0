@@ -12,4 +12,12 @@
     <PackageReference Include="FluentValidation" Version="12.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Escudo del Estado de Sonora usado en el encabezado del correo de notificación
+         (EmailTemplates.BodyConstanciaEmitida); se embebe en el ensamblado para no
+         depender de un archivo en disco en tiempo de ejecución. PNG (no SVG) porque
+         varios clientes de correo no renderizan SVG en el cuerpo del mensaje. -->
+    <EmbeddedResource Include="Resources\escudo-sonora-blanco.png" LogicalName="EscudoSonoraBlanco.png" />
+  </ItemGroup>
+
 </Project>

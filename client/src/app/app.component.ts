@@ -8,7 +8,7 @@ import { LoadingComponent } from './shared/components';
 		<app-loading [listener]="true"></app-loading>
 		<router-outlet></router-outlet>
 	`,
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [LoadingComponent, RouterOutlet]
 })
 export class AppComponent { }

@@ -13,13 +13,13 @@ namespace CartaNoAdeudoApi.Core.DTOs.Requests.Layouts
     /// único layout activo y vigente.
     /// </summary>
     public record RegistrarLayoutRequest(
-        [property: Required(ErrorMessage = "La descripción del layout es obligatoria")]
+        [Required(ErrorMessage = "La descripción de la plantilla es obligatoria")]
         string Descripcion,
 
-        [property: Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
         DateOnly VigenciaInicio,
 
-        [property: Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
         DateOnly VigenciaFin,
 
         /// <summary>RF-002 entrada "Estatus del layout (Activo/Inactivo)".</summary>
@@ -32,13 +32,13 @@ namespace CartaNoAdeudoApi.Core.DTOs.Requests.Layouts
     /// plantilla actual. RN-007: los cambios no afectan documentos ya emitidos.
     /// </summary>
     public record ActualizarLayoutRequest(
-        [property: Required(ErrorMessage = "La descripción del layout es obligatoria")]
+        [Required(ErrorMessage = "La descripción de la plantilla es obligatoria")]
         string Descripcion,
 
-        [property: Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
         DateOnly VigenciaInicio,
 
-        [property: Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
         DateOnly VigenciaFin
     );
 }

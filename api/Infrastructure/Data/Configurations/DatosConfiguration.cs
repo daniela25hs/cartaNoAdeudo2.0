@@ -25,6 +25,8 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Configurations
                 .HasMaxLength(20)
                 .IsRequired();
 
+            builder.Property(d => d.Intentos).HasDefaultValue(0);
+
             builder.HasIndex(d => new { d.RO, d.IdTipoCarta });
 
             builder.HasOne(d => d.TipoCarta)

@@ -1,0 +1,90 @@
+<app-page-content pageTitle="Firmantes">
+	<div class="card">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h5 class="card-title mb-0">Firmantes registrados</h5>
+				<button type="button" class="btn btn-warning" (click)="nuevo()">
+					<span class="mdi mdi-account-plus-outline"></span> Nuevo firmante
+				</button>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover align-middle">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Puesto</th>
+							<th>Certificado</th>
+							<th>Vigencia operativa</th>
+							<th class="text-end">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (f of firmantes(); track f.id) {
+							<tr>
+								<td>
+									{{ f.nombre }}
+									@if (f.proximoAVencer) {
+										<span
+											class="badge bg-warning text-dark ms-1"
+											title="Vence en los próximos 30 días"
+										>
+											Próximo a vencer
+										</span>
+									}
+								</td>
+								<td>{{ f.puesto || "—" }}</td>
+								<td>
+									<span
+										class="badge"
+										[class.bg-success]="f.estatusCertificado === 'Vigente'"
+										[class.bg-danger]="f.estatusCertificado === 'Vencido'"
+										[class.bg-secondary]="f.estatusCertificado === 'PorIniciar'"
+									>
+										{{ f.estatusCertificado || "Sin certificado" }}
+									</span>
+								</td>
+								<td>
+									{{ f.vigenciaOperativaInicio }} — {{ f.vigenciaOperativaFin }}
+								</td>
+								<td class="text-end">
+									<div
+										class="d-flex justify-content-end align-items-center gap-3"
+									>
+										<div
+											class="form-check form-switch mb-0"
+											[title]="f.activo ? 'Desactivar' : 'Activar'"
+										>
+											<input
+												type="checkbox"
+												class="form-check-input"
+												role="switch"
+												style="width: 2rem; height: 1rem; cursor: pointer"
+												[checked]="f.activo"
+												(click)="toggle($event, f)"
+											/>
+										</div>
+										<button
+											type="button"
+											class="btn btn-sm btn-link p-0"
+											title="Editar"
+											(click)="editar(f.id)"
+										>
+											<span class="mdi mdi-pencil-outline fs-5"></span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td colspan="5" class="text-center text-muted py-4">
+									No hay firmantes registrados.
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</app-page-content>

@@ -14,7 +14,7 @@ import { UserState } from '../../shared/states/user.state';
 	imports: [FormsModule, PageTextsPipe],
 	providers: [DialogService],
 	templateUrl: './login.component.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.Default,
 	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {

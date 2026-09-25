@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     templateUrl: './error.component.html',
     styleUrls: ['./error.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     standalone: true,
 })
 export class ErrorComponent implements OnInit {

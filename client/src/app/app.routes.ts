@@ -71,6 +71,34 @@ export const routes: Routes = [
 						(c) => c.ProfileComponent,
 					),
 			},
+			{
+				path: 'cartas',
+				loadComponent: () =>
+					import('./pages/cartas/cartas.component').then(
+						(c) => c.CartasComponent,
+					),
+			},
+			{
+				path: 'firmantes',
+				loadComponent: () =>
+					import('./pages/firmantes/firmantes.component').then(
+						(c) => c.FirmantesComponent,
+					),
+			},
+			{
+				path: 'layouts',
+				loadComponent: () =>
+					import('./pages/layouts/layouts.component').then(
+						(c) => c.LayoutsComponent,
+					),
+			},
+			{
+				path: 'tareas',
+				loadComponent: () =>
+					import('./pages/tareas/tareas.component').then(
+						(c) => c.TareasComponent,
+					),
+			},
 			// Aquí se agregan los módulos de negocio a medida que se construyan.
 			// Ver docs/client/GUIA_DESARROLLO_CLIENT.md.
 		],

@@ -6,7 +6,7 @@ import { AppState } from '../../../../shared/states/app.state';
     selector: 'app-page-content',
     templateUrl: './page-content.component.html',
     styleUrls: ['./page-content.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [BreadcrumbComponent]
 })
 export class PageContentComponent implements OnInit {

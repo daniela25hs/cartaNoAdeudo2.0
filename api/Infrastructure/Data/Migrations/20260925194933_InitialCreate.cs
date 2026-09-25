@@ -57,6 +57,21 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "control_folios",
+                schema: "sist",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    anio = table.Column<int>(type: "integer", nullable: false),
+                    ultimo_folio = table.Column<int>(type: "integer", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_control_folios", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "estado",
                 schema: "cat",
                 columns: table => new
@@ -74,7 +89,8 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 schema: "cat",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -131,14 +147,13 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "layout",
+                name: "frases",
                 schema: "cat",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    archivo = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    fecha_hora = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    anio = table.Column<int>(type: "integer", nullable: false),
+                    frase = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     fecha_inicio_autorizada = table.Column<DateOnly>(type: "date", nullable: false),
                     fecha_fin_autorizada = table.Column<DateOnly>(type: "date", nullable: false),
                     id_creo = table.Column<Guid>(type: "uuid", nullable: true),
@@ -146,6 +161,29 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     id_edito = table.Column<Guid>(type: "uuid", nullable: true),
                     fecha_edito = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     activo = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_frases", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "layout",
+                schema: "cat",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    archivo = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    fecha_hora = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    fecha_inicio_autorizada = table.Column<DateOnly>(type: "date", nullable: false),
+                    fecha_fin_autorizada = table.Column<DateOnly>(type: "date", nullable: false),
+                    activo = table.Column<bool>(type: "boolean", nullable: false),
+                    id_creo = table.Column<Guid>(type: "uuid", nullable: true),
+                    fecha_creo = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    id_edito = table.Column<Guid>(type: "uuid", nullable: true),
+                    fecha_edito = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,7 +224,8 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     folio = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     fecha_firmado = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     fecha_hora = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    estatus = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false)
+                    estatus = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    intentos = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -254,9 +293,10 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                     descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     fecha = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     identificador = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    certificado = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    certificado = table.Column<string>(type: "text", nullable: true),
                     hex_serie = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     finger_print = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    cadena_original = table.Column<string>(type: "text", nullable: true),
                     firma = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -278,7 +318,7 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     id_dato = table.Column<Guid>(type: "uuid", nullable: false),
-                    id_estado = table.Column<Guid>(type: "uuid", nullable: false),
+                    id_estado = table.Column<int>(type: "integer", nullable: false),
                     fecha_inicio = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     fecha_fin = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     nota = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
@@ -303,6 +343,30 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tarea_historial",
+                schema: "bit",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    id_tarea = table.Column<Guid>(type: "uuid", nullable: false),
+                    estado = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    fecha = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    mensaje = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tarea_historial", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_tarea_historial_tareas_id_tarea",
+                        column: x => x.id_tarea,
+                        principalSchema: "carta",
+                        principalTable: "tareas",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_archivos_id_dato",
                 schema: "carta",
@@ -321,6 +385,13 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 schema: "sist",
                 table: "configuracion",
                 column: "clave",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_control_folios_anio",
+                schema: "sist",
+                table: "control_folios",
+                column: "anio",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -369,10 +440,22 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_frases_anio",
+                schema: "cat",
+                table: "frases",
+                column: "anio");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_layout_activo_fecha_inicio_autorizada_fecha_fin_autorizada",
                 schema: "cat",
                 table: "layout",
                 columns: new[] { "activo", "fecha_inicio_autorizada", "fecha_fin_autorizada" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tarea_historial_id_tarea",
+                schema: "bit",
+                table: "tarea_historial",
+                column: "id_tarea");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tareas_id_dato",
@@ -414,6 +497,10 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 schema: "sist");
 
             migrationBuilder.DropTable(
+                name: "control_folios",
+                schema: "sist");
+
+            migrationBuilder.DropTable(
                 name: "estado",
                 schema: "cat");
 
@@ -430,8 +517,16 @@ namespace CartaNoAdeudoApi.Infrastructure.Data.Migrations
                 schema: "carta");
 
             migrationBuilder.DropTable(
+                name: "frases",
+                schema: "cat");
+
+            migrationBuilder.DropTable(
                 name: "layout",
                 schema: "cat");
+
+            migrationBuilder.DropTable(
+                name: "tarea_historial",
+                schema: "bit");
 
             migrationBuilder.DropTable(
                 name: "tareas",

@@ -6,7 +6,7 @@ declare const $: any
 	selector: 'app-input',
 	standalone: true,
 	templateUrl: './input.component.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
+	changeDetection: ChangeDetectionStrategy.Default,
 	styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements AfterViewInit {

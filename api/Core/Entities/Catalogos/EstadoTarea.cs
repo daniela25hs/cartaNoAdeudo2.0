@@ -13,6 +13,9 @@ namespace CartaNoAdeudoApi.Core.Entities.Catalogos
         public const string Completada = "Completada";
         public const string Error = "Error";
 
+        /// <summary>Intento que agotó los reintentos automáticos (ver <c>EstatusSolicitud.ErrorDefinitivo</c>).</summary>
+        public const string ErrorDefinitivo = "ErrorDefinitivo";
+
         public int Id { get; set; }
         public required string Descripcion { get; set; }
     }

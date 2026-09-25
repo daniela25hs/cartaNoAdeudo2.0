@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     imports: [FormsModule]
 })
 export class SearchComponent implements OnInit {

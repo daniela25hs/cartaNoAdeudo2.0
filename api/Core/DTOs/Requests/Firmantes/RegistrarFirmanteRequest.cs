@@ -3,37 +3,32 @@ using CartaNoAdeudoApi.Core.Entities.Catalogos;
 
 namespace CartaNoAdeudoApi.Core.DTOs.Requests.Firmantes
 {
+    // El nombre del firmante no se captura: se extrae del certificado del PFX (CN del subject).
     public record RegistrarFirmanteRequest(
-        [property: Required(ErrorMessage = "La contraseña del certificado es obligatoria")]
+        [Required(ErrorMessage = "La contraseña del certificado es obligatoria")]
         string Contrasena,
-
-        [property: Required(ErrorMessage = "El nombre del servidor público es obligatorio")]
-        string Nombre,
 
         string? Puesto,
 
         Genero Genero,
 
-        [property: Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
         DateOnly VigenciaOperativaInicio,
 
-        [property: Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
         DateOnly VigenciaOperativaFin,
         bool Activo
     );
 
     public record ActualizarFirmanteRequest(
-        [property: Required(ErrorMessage = "El nombre del servidor público es obligatorio")]
-        string Nombre,
-
         string? Puesto,
 
         Genero Genero,
 
-        [property: Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de inicio de vigencia operativa es obligatoria")]
         DateOnly VigenciaOperativaInicio,
 
-        [property: Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
+        [Required(ErrorMessage = "La fecha de fin de vigencia operativa es obligatoria")]
         DateOnly VigenciaOperativaFin,
 
         string? Contrasena
